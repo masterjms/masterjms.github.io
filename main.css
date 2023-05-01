@@ -232,6 +232,11 @@ a:focus,a:hover {
     height: 700px;
 }
 
+.section {
+    text-align: center;
+    height: 100px;
+}
+
 .project-1.load-bg .project-image {
     background-image: url(./imgs/amos.gif);
 }
