@@ -1,12 +1,138 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>나의 홈페이지</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AlgoReview Homepage</title>
+  <link rel="stylesheet" href="index.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" />
 </head>
 <body>
-    <h1>나의 GitHub Pages 홈페이지</h1>
-    <p>안녕하세요! 이 페이지는 GitHub Pages를 이용해 만든 홈페이지입니다.</p>
+  <div class="homepage">
+    <header class="l-header">
+      <nav class="hero-nav bd-grid">
+        <div class="hero-nav-menu" id="hero-nav-menu">
+          <ul class="hero-nav-list">
+            <li class="hero-nav-item"><a href="index.html" class="hero-nav-link">Home</a></li>
+            <li class="hero-nav-item"><a href="login.html" class="hero-nav-link">Login</a></li>
+            <li class="hero-nav-item"><a href="review.html" class="hero-nav-link">Review</a></li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <section class="l-main bd-grid">
+        <section class="hero-home">
+          <div class="hero-home-data">
+            <h1 class="hero-home-title">Algo Review</h1>
+            <p id="rotating-message" class="hero-home-description fade-text fade-in">
+                생성형 AI를 활용하는 코테준비생을 위한 솔루션
+            </p>
+          </div>
+          <div class="hero-home-img">
+            <img src="assets/images/logo.svg" alt="logo" class="hero-logo" />
+          </div>
+        </section>
+        <div class="hero-home-scroll">
+          <span class="hero-home-scroll-text">Scroll down for more</span>
+          <img src="https://i.postimg.cc/brPG1vnY/bx-mouse.png" alt="scroll icon" class="hero-home-scroll-icon" />
+        </div>
+      </section>
+    </section>
+
+    <!-- Subsection -->
+    <section class="hero-subsection">
+      <div class="intro-logo-container">
+        <img src="assets/images/logo.svg" alt="algoreviewLogo" class="intro-logo" />
+        <div class="intro-text">
+          <h2>Q. 왜 알고리뷰를 사용해야 할까요?</h2>
+        </div>
+      </div>
+
+      <section class="subhero-section">
+        <div class="container-fluid">
+          <div class="container">
+            <div class="row">
+              <div class="col-sm-4">
+                <div class="subhero-card text-center">
+                  <div class="title">
+                    <i class="fa fa-paper-plane"></i>
+                    <h2>AI 기반 코드 리뷰</h2>
+                  </div>
+                  <div class="price"><h4>Open AI</h4></div>
+                  <div class="option"><ul><li><i class="fa fa-check"></i> 자동으로 코드 개선 방향을 제시합니다</li></ul></div>
+                </div>
+              </div>
+
+              <div class="col-sm-4">
+                <div class="subhero-card text-center">
+                  <div class="title">
+                    <i class="fa fa-plane"></i>
+                    <h2>피드백 & 모범 답안</h2>
+                  </div>
+                  <div class="price"><h4>UX/UI</h4></div>
+                  <div class="option"><ul><li><i class="fa fa-check"></i> 단순한 정답이 아닌, 더 나은 코드를 학습하세요.</li></ul></div>
+                </div>
+              </div>
+
+              <div class="col-sm-4">
+                <div class="subhero-card text-center">
+                  <div class="title">
+                    <i class="fa fa-rocket"></i>
+                    <h2>코딩 실력 성장 기록</h2>
+                  </div>
+                  <div class="price"><h4>History</h4></div>
+                  <div class="option"><ul><li><i class="fa fa-check"></i> 나만의 코드 학습 히스토리를 관리하세요.</li></ul></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+
+      <div class="home-footer">
+        <div class="home-footer-left">
+          <h3>minsung</h3>
+          <ul>
+            <li>장민성</li>
+          </ul>
+        </div>
+        <div class="home-footer-right">
+          <div class="home-footer-logo-space"><img src="assets/images/logo.svg" class="footerlogo"/></div>
+          <p>&copy; Minsung</p>
+          <p>Development_Log</p>
+        </div>
+      </div>
+  </div>
+
+  <script>
+    const messages = [
+      "생성형 AI를 활용하는 코테준비생을 위한 솔루션",
+      "개발 실력 향상의 새로운 패러다임",
+      "어려움을 겪고 있는 문제를 해결할 수 있도록 방향성을 제안해드립니다."
+    ];
+  
+    let currentIndex = 0;
+    const messageElement = document.getElementById("rotating-message");
+  
+    function rotateMessage() {
+      messageElement.classList.remove("fade-in");
+      messageElement.classList.add("fade-out");
+  
+      setTimeout(() => {
+        currentIndex = (currentIndex + 1) % messages.length;
+        messageElement.textContent = messages[currentIndex];
+        messageElement.classList.remove("fade-out");
+        messageElement.classList.add("fade-in");
+      }, 500);
+    }
+  
+    setInterval(rotateMessage, 3000);
+  </script>
+  
 </body>
 </html>
+
