@@ -1023,6 +1023,44 @@
           </div>
         </article>
 
+        <article class="project" data-project="radio" tabindex="0">
+          <div class="project-visual red">
+            <span class="project-label">IoT · Backend Experiment</span>
+            <i class="project-icon fa-solid fa-tower-broadcast"></i>
+            <div>
+              <h3>IoT Radio Server</h3>
+              <p>IoT 라디오/방송 장비 제어를 위한 Python 비동기 클라우드 서버</p>
+            </div>
+          </div>
+          <div class="project-body">
+            <h3>유상 외주 개발 프로젝트</h3>
+            <p class="project-summary">IoT 라디오/방송 장비 제어를 위한 서버를 개발하여 AWS LightSail에 배포 운영하였습니다.</p>
+            <div class="tags"><span class="tag">Python</span>
+              <span class="tag">aiohttp</span>
+              <span class="tag">JWT</span>
+              <span class="tag">AWS LightSail</span>
+              <span class="tag">IoT ESP-32</span></div>
+            <div class="detail-block">
+              <div>
+                <strong><i class="fa-solid fa-screwdriver-wrench"></i> 기여한 점</strong>
+                <ul><li>nginx/systemd 기반 AWS Lightsail 배포 및 CD 파이프라인 구축</li>
+                  <li>IoT 라디오 방송 릴레이 시스템 아키텍처 설계 (방송국→Lightsail 서버→ESP32 단말)</li>
+                  <li>브라우저 Opus 인코딩 → 서버 파싱 검증 (OggOpusDemuxer 구현)</li>
+                  </ul>
+              </div>
+              <div>
+                <strong><i class="fa-solid fa-seedling"></i> 배운 점</strong>
+                <ul><li>C6는 TLS 전에 SNTP 시간 동기화 필수</li>
+                <li>작은 내부 시스템엔 S3/CloudFront보다 nginx 정적 서빙이 더 적합 (오버엔지니어링 지양)</li></ul>
+              </div>
+            </div>
+            <div class="project-links">
+              <a class="project-link" href="https://github.com/masterjms/IoT_radio_server" target="_blank" rel="noreferrer"><i class="fa-brands fa-github"></i> GitHub</a>
+              <button class="project-link button-like secondary" type="button" data-open-project="radio"><i class="fa-solid fa-images"></i> 자세히 보기</button>
+            </div>
+          </div>
+        </article>
+
         <article class="project" data-project="suman" tabindex="0">
           <div class="project-visual alt">
             <span class="project-label">Company Website · Frontend</span>
@@ -1159,41 +1197,6 @@
             <div class="project-links">
               <a class="project-link" href="https://github.com/masterjms/smart-factory-edge-simulator" target="_blank" rel="noreferrer"><i class="fa-brands fa-github"></i> GitHub</a>
 <button class="project-link button-like secondary" type="button" data-open-project="factory"><i class="fa-solid fa-images"></i> 자세히 보기</button>
-            </div>
-          </div>
-        </article>
-
-        <article class="project" data-project="radio" tabindex="0">
-          <div class="project-visual red">
-            <span class="project-label">IoT · Backend Experiment</span>
-            <i class="project-icon fa-solid fa-tower-broadcast"></i>
-            <div>
-              <h3>IoT Radio Server</h3>
-              <p>IoT 라디오/방송 장비 제어를 위한 Python 비동기 서버 실험</p>
-            </div>
-          </div>
-          <div class="project-body">
-            <h3>IoT 라디오/방송 장비 제어를 위한 Python 비동기 서버 실험</h3>
-            <p class="project-summary">IoT 라디오/방송 장비 제어를 위한 서버 실험 프로젝트입니다. Python 비동기 서버와 인증 구조를 기반으로 설계했습니다.</p>
-            <div class="tags"><span class="tag">Python</span>
-<span class="tag">aiohttp</span>
-<span class="tag">JWT</span>
-<span class="tag">bcrypt</span>
-<span class="tag">IoT Backend</span></div>
-            <div class="detail-block">
-              <div>
-                <strong><i class="fa-solid fa-screwdriver-wrench"></i> 기여한 점</strong>
-                <ul><li>장비와 서버 사이의 제어/인증 흐름을 고려한 백엔드 구조 실험</li>
-<li>비동기 HTTP/WebSocket 기반 확장을 염두에 둔 Python 서버 스택 선정</li></ul>
-              </div>
-              <div>
-                <strong><i class="fa-solid fa-seedling"></i> 배운 점</strong>
-                <ul><li>IoT 서버는 연결 안정성, 인증, 네트워크 환경 변화 대응이 중요하다는 점</li></ul>
-              </div>
-            </div>
-            <div class="project-links">
-              <a class="project-link" href="https://github.com/masterjms/IoT_radio_server" target="_blank" rel="noreferrer"><i class="fa-brands fa-github"></i> GitHub</a>
-<button class="project-link button-like secondary" type="button" data-open-project="radio"><i class="fa-solid fa-images"></i> 자세히 보기</button>
             </div>
           </div>
         </article>
