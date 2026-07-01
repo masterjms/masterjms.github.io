@@ -1,521 +1,1860 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>장민성 - Frontend to DevOps Developer</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="장민성 포트폴리오 - 서비스 개발, 백엔드 개선, 비동기 처리, 프론트엔드, 데이터/AI 프로젝트 중심 포트폴리오" />
+  <meta property="og:title" content="장민성 | Project-driven Developer Portfolio" />
+  <meta property="og:description" content="프로덕션 백엔드 개선, Next.js 웹 서비스, Celery 비동기 처리, 데이터/AI, 스마트팩토리 시뮬레이션 프로젝트" />
+  <meta property="og:type" content="website" />
+  <title>장민성 | Project-driven Developer Portfolio</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+  <style>
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-        }
+    :root {
+      --bg: #0f172a;
+      --bg-soft: #111827;
+      --panel: rgba(15, 23, 42, 0.78);
+      --card: rgba(255, 255, 255, 0.94);
+      --card-strong: #ffffff;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --dark: #111827;
+      --dark-muted: #64748b;
+      --line: rgba(148, 163, 184, 0.22);
+      --accent: #7c3aed;
+      --accent-2: #06b6d4;
+      --accent-3: #22c55e;
+      --warning: #f59e0b;
+      --shadow: 0 24px 80px rgba(15, 23, 42, 0.24);
+      --radius-xl: 28px;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --max: 1180px;
+    }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans KR", Roboto, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(124, 58, 237, 0.40), transparent 34rem),
+        radial-gradient(circle at top right, rgba(6, 182, 212, 0.35), transparent 30rem),
+        linear-gradient(180deg, #020617 0%, #0f172a 38%, #111827 100%);
+      min-height: 100vh;
+      line-height: 1.65;
+    }
 
-        .header {
-            text-align: center;
-            margin-bottom: 3rem;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 3rem 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
+    body.modal-open { overflow: hidden; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
 
-        .profile-section {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 3rem;
-            flex-wrap: wrap;
-            margin-bottom: 2rem;
-        }
+    .page {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 28px 20px 64px;
+    }
 
-        .profile-image {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
+    .nav {
+      position: sticky;
+      top: 16px;
+      z-index: 30;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 12px 16px;
+      margin-bottom: 48px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(2, 6, 23, 0.72);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.24);
+    }
 
-        .profile-image:hover {
-            transform: scale(1.05);
-            border-color: rgba(255, 255, 255, 0.5);
-        }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
 
-        .profile-image i {
-            font-size: 4rem;
-            color: rgba(255, 255, 255, 0.8);
-        }
+    .brand-mark {
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: 0 8px 24px rgba(124, 58, 237, 0.35);
+    }
 
-        .profile-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 50%;
-        }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.92rem;
+      color: var(--muted);
+    }
 
-        .profile-info {
-            text-align: left;
-            color: white;
-        }
+    .nav-links a {
+      padding: 8px 12px;
+      border-radius: 999px;
+      transition: 0.2s ease;
+      white-space: nowrap;
+    }
 
-        .profile-info h1 {
-            font-size: 3rem;
-            margin-bottom: 0.5rem;
-            font-weight: 700;
-        }
+    .nav-links a:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.08);
+    }
 
-        .profile-info .title {
-            font-size: 1.3rem;
-            margin-bottom: 1rem;
-            opacity: 0.9;
-            font-weight: 300;
-        }
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(300px, 0.6fr);
+      gap: 28px;
+      align-items: stretch;
+      margin-bottom: 34px;
+    }
 
-        .profile-info .description {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            opacity: 0.8;
-            max-width: 500px;
-        }
+    .hero-main,
+    .hero-side,
+    .section {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      backdrop-filter: blur(18px);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius-xl);
+    }
 
-        .social-links {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            margin-top: 2rem;
-        }
+    .hero-main {
+      padding: 48px;
+      min-height: 480px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
 
-        .social-links a {
-            color: white;
-            font-size: 1.5rem;
-            padding: 0.8rem;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            transition: all 0.3s ease;
-            text-decoration: none;
-        }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      width: fit-content;
+      padding: 7px 12px;
+      margin-bottom: 22px;
+      border: 1px solid rgba(124, 58, 237, 0.35);
+      border-radius: 999px;
+      background: rgba(124, 58, 237, 0.14);
+      color: #ddd6fe;
+      font-weight: 700;
+      font-size: 0.86rem;
+    }
 
-        .social-links a:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateY(-3px);
-        }
+    h1 {
+      font-size: clamp(2.4rem, 6vw, 5rem);
+      line-height: 1.03;
+      letter-spacing: -0.08em;
+      margin-bottom: 22px;
+    }
 
-        .main-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-        }
+    .gradient-text {
+      background: linear-gradient(135deg, #ffffff 0%, #c4b5fd 48%, #67e8f9 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
 
-        .card {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 2rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
+    .hero-description {
+      max-width: 790px;
+      color: #cbd5e1;
+      font-size: clamp(1.02rem, 2vw, 1.2rem);
+      margin-bottom: 28px;
+    }
 
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
-        }
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 20px;
+    }
 
-        .card h2 {
-            font-size: 1.5rem;
-            margin-bottom: 1.5rem;
-            color: #4a5568;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      min-height: 44px;
+      padding: 11px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      font-weight: 800;
+      transition: transform 0.2s ease, border 0.2s ease, background 0.2s ease;
+    }
 
-        .card i {
-            color: #667eea;
-        }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary {
+      border: 0;
+      color: #fff;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: 0 12px 30px rgba(6, 182, 212, 0.22);
+    }
+    .btn-secondary { color: #dbeafe; background: rgba(255, 255, 255, 0.07); }
 
-        .info-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 1rem;
-            padding: 0.5rem 0;
-        }
+    .hero-meta {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 40px;
+    }
 
-        .info-item i {
-            width: 30px;
-            text-align: center;
-            margin-right: 1rem;
-            color: #667eea;
-        }
+    .metric {
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 18px;
+      padding: 16px;
+    }
 
-        .tech-stack {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
+    .metric strong {
+      display: block;
+      color: #fff;
+      font-size: 1.2rem;
+      line-height: 1.2;
+      margin-bottom: 4px;
+    }
 
-        .tech-item {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            padding: 0.4rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
+    .metric span { color: var(--muted); font-size: 0.87rem; }
 
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-top: 1.5rem;
-        }
+    .hero-side {
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
 
-        .project-card {
-            background: #f8fafc;
-            border-radius: 10px;
-            padding: 1.5rem;
-            border-left: 4px solid #667eea;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
+    .profile-card {
+      display: grid;
+      gap: 14px;
+      padding: 22px;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--line);
+    }
 
-        .project-card:hover {
-            background: #edf2f7;
-            transform: translateX(5px);
-        }
+    .profile-image {
+      width: 118px;
+      height: 118px;
+      border-radius: 28px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: rgba(255, 255, 255, 0.08);
+    }
 
-        .project-card h3 {
-            color: #2d3748;
-            margin-bottom: 0.5rem;
-        }
+    .profile-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
 
-        .project-card p {
-            color: #718096;
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-        }
+    .profile-name {
+      font-size: 1.45rem;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+    }
 
-        .project-links {
-            display: flex;
-            gap: 1rem;
-        }
+    .profile-role { color: #bae6fd; font-weight: 700; }
 
-        .project-links a {
-            color: #667eea;
-            text-decoration: none;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
-        }
+    .contact-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
 
-        .project-links a:hover {
-            text-decoration: underline;
-        }
+    .contact-list a,
+    .contact-list span {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+    }
 
-        .footer {
-            text-align: center;
-            margin-top: 3rem;
-            padding: 2rem;
-            color: rgba(255, 255, 255, 0.8);
-        }
+    .focus-card {
+      padding: 18px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, rgba(124, 58, 237, 0.18), rgba(6, 182, 212, 0.12));
+      border: 1px solid rgba(148, 163, 184, 0.25);
+    }
 
-        @media (max-width: 768px) {
-            .profile-section {
-                flex-direction: column;
-                text-align: center;
-            }
+    .focus-card h3 { margin-bottom: 10px; font-size: 1rem; }
+    .focus-card p { color: #cbd5e1; font-size: 0.93rem; }
 
-            .profile-info {
-                text-align: center;
-            }
+    .section {
+      padding: 34px;
+      margin-top: 24px;
+    }
 
-            .profile-info h1 {
-                font-size: 2.5rem;
-            }
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      align-items: flex-end;
+      margin-bottom: 24px;
+    }
 
-            .main-content {
-                grid-template-columns: 1fr;
-            }
+    .section-kicker {
+      color: #67e8f9;
+      font-weight: 900;
+      font-size: 0.84rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      margin-bottom: 7px;
+    }
 
-            .container {
-                padding: 1rem;
-            }
-        }
+    h2 {
+      font-size: clamp(1.7rem, 3vw, 2.45rem);
+      line-height: 1.18;
+      letter-spacing: -0.055em;
+    }
 
-        .highlight {
-            background: linear-gradient(120deg, transparent 0%, rgba(102, 126, 234, 0.3) 50%, transparent 100%);
-            padding: 0.2rem 0.4rem;
-            border-radius: 4px;
-        }
-    </style>
+    .section-lead {
+      color: var(--muted);
+      max-width: 640px;
+      font-size: 1rem;
+    }
+
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .project {
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 420px;
+      border-radius: 24px;
+      background: var(--card);
+      color: var(--dark);
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      box-shadow: 0 16px 48px rgba(15, 23, 42, 0.20);
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .project:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 22px 58px rgba(15, 23, 42, 0.30);
+    }
+
+    .project:focus-visible {
+      outline: 3px solid #67e8f9;
+      outline-offset: 4px;
+    }
+
+    .project.featured {
+      grid-column: span 2;
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      min-height: 470px;
+    }
+
+    .project-visual {
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 24px;
+      background:
+        radial-gradient(circle at 15% 15%, rgba(255, 255, 255, 0.55), transparent 12rem),
+        linear-gradient(135deg, rgba(124, 58, 237, 0.94), rgba(6, 182, 212, 0.86));
+      color: #fff;
+    }
+
+    .project-visual.alt {
+      background:
+        radial-gradient(circle at 20% 0%, rgba(255, 255, 255, 0.46), transparent 10rem),
+        linear-gradient(135deg, #0f766e, #0891b2);
+    }
+
+    .project-visual.green {
+      background:
+        radial-gradient(circle at 20% 0%, rgba(255, 255, 255, 0.40), transparent 9rem),
+        linear-gradient(135deg, #166534, #14b8a6);
+    }
+
+    .project-visual.orange {
+      background:
+        radial-gradient(circle at 20% 0%, rgba(255, 255, 255, 0.36), transparent 9rem),
+        linear-gradient(135deg, #9a3412, #f59e0b);
+    }
+
+    .project-visual.dark {
+      background:
+        radial-gradient(circle at 20% 0%, rgba(255, 255, 255, 0.34), transparent 9rem),
+        linear-gradient(135deg, #1e293b, #334155);
+    }
+
+    .project-visual.purple {
+      background:
+        radial-gradient(circle at 18% 8%, rgba(255, 255, 255, 0.48), transparent 10rem),
+        linear-gradient(135deg, #6d28d9, #2563eb);
+    }
+
+    .project-visual.red {
+      background:
+        radial-gradient(circle at 18% 8%, rgba(255, 255, 255, 0.42), transparent 10rem),
+        linear-gradient(135deg, #991b1b, #f97316);
+    }
+
+    .project-visual p {
+      color: rgba(255, 255, 255, 0.84);
+      font-weight: 650;
+      font-size: 0.94rem;
+    }
+
+    .project-label {
+      display: inline-flex;
+      width: fit-content;
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.16);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      font-size: 0.82rem;
+      font-weight: 800;
+    }
+
+    .project-icon { font-size: 3rem; opacity: 0.95; }
+
+    .project-body {
+      padding: 26px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .project h3 {
+      font-size: 1.45rem;
+      line-height: 1.25;
+      letter-spacing: -0.04em;
+      margin-bottom: 10px;
+    }
+
+    .project-summary {
+      color: #475569;
+      margin-bottom: 18px;
+      font-size: 0.98rem;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .tag {
+      padding: 6px 10px;
+      border-radius: 999px;
+      color: #334155;
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      font-size: 0.8rem;
+      font-weight: 800;
+    }
+
+    .detail-block {
+      display: grid;
+      gap: 12px;
+      margin: 12px 0 18px;
+    }
+
+    .detail-block strong {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #0f172a;
+      font-size: 0.95rem;
+      margin-bottom: 4px;
+    }
+
+    .detail-block ul {
+      padding-left: 1.1rem;
+      color: #475569;
+      font-size: 0.93rem;
+    }
+
+    .detail-block li + li { margin-top: 5px; }
+
+    .project-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: auto;
+      padding-top: 12px;
+    }
+
+    .project-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 12px;
+      border-radius: 999px;
+      background: #0f172a;
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.88rem;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+      border: 0;
+      cursor: pointer;
+    }
+
+    .project-link.secondary { color: #0f172a; background: #e2e8f0; }
+    .project-link:hover { transform: translateY(-2px); opacity: 0.92; }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .skill-card {
+      padding: 20px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--line);
+    }
+
+    .skill-card i {
+      color: #67e8f9;
+      font-size: 1.4rem;
+      margin-bottom: 12px;
+    }
+
+    .skill-card h3 { font-size: 1.05rem; margin-bottom: 8px; }
+    .skill-card p { color: var(--muted); font-size: 0.91rem; }
+
+    .timeline {
+      display: grid;
+      gap: 14px;
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 160px minmax(0, 1fr);
+      gap: 18px;
+      padding: 18px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--line);
+    }
+
+    .timeline-date { color: #bae6fd; font-weight: 900; }
+    .timeline-title {
+      font-weight: 900;
+      font-size: 1.08rem;
+      margin-bottom: 5px;
+    }
+    .timeline-desc { color: var(--muted); font-size: 0.94rem; }
+
+    .archive-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .archive-card {
+      padding: 18px;
+      border-radius: 18px;
+      color: var(--dark);
+      background: var(--card-strong);
+      border: 1px solid rgba(226, 232, 240, 0.7);
+      transition: transform 0.2s ease;
+    }
+
+    .archive-card:hover { transform: translateY(-2px); }
+    .archive-card h3 { font-size: 1rem; margin-bottom: 6px; }
+    .archive-card p { color: var(--dark-muted); font-size: 0.9rem; margin-bottom: 12px; }
+    .archive-card span { color: #0f172a; font-size: 0.88rem; font-weight: 900; }
+
+    .footer {
+      padding: 40px 0 0;
+      color: var(--muted);
+      text-align: center;
+      font-size: 0.92rem;
+    }
+
+    /* ===== Project Detail Modal ===== */
+    .project-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: none;
+      padding: 28px 18px;
+      overflow-y: auto;
+      background: rgba(2, 6, 23, 0.78);
+      backdrop-filter: blur(12px);
+    }
+
+    .project-modal.is-open { display: block; }
+
+    .project-modal-panel {
+      position: relative;
+      width: min(1080px, 100%);
+      margin: 0 auto;
+      border-radius: 28px;
+      background: #f8fafc;
+      color: #0f172a;
+      box-shadow: 0 32px 90px rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.32);
+      overflow: hidden;
+    }
+
+    .project-modal-hero {
+      padding: 30px;
+      color: #fff;
+      background:
+        radial-gradient(circle at 15% 10%, rgba(255, 255, 255, 0.38), transparent 12rem),
+        linear-gradient(135deg, #0f172a, #4f46e5 54%, #06b6d4);
+    }
+
+    .project-modal-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      align-items: flex-start;
+    }
+
+    .project-modal-kicker {
+      display: inline-flex;
+      width: fit-content;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.16);
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      font-weight: 900;
+      font-size: 0.82rem;
+      margin-bottom: 14px;
+    }
+
+    .project-modal-title {
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      line-height: 1.08;
+      letter-spacing: -0.06em;
+      margin-bottom: 12px;
+    }
+
+    .project-modal-summary {
+      max-width: 760px;
+      color: rgba(255, 255, 255, 0.84);
+      font-size: 1rem;
+    }
+
+    .project-modal-close {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      border-radius: 999px;
+      color: #fff;
+      background: rgba(255, 255, 255, 0.14);
+      cursor: pointer;
+      font-size: 1.1rem;
+    }
+
+    .project-modal-content {
+      padding: 28px 30px 32px;
+      display: grid;
+      gap: 24px;
+    }
+
+    .modal-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .modal-tag {
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: #e0f2fe;
+      color: #075985;
+      font-size: 0.82rem;
+      font-weight: 900;
+      border: 1px solid #bae6fd;
+    }
+
+    .modal-section-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .modal-box {
+      padding: 20px;
+      border-radius: 20px;
+      background: #fff;
+      border: 1px solid #e2e8f0;
+    }
+
+    .modal-box h4 {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1rem;
+      margin-bottom: 10px;
+    }
+
+    .modal-box ul {
+      padding-left: 1.2rem;
+      color: #475569;
+      font-size: 0.94rem;
+    }
+
+    .modal-box li + li { margin-top: 7px; }
+
+    .modal-gallery {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .modal-shot {
+      position: relative;
+      min-height: 150px;
+      overflow: hidden;
+      border-radius: 18px;
+      background:
+        linear-gradient(135deg, rgba(15, 23, 42, 0.08), rgba(59, 130, 246, 0.14)),
+        #e2e8f0;
+      border: 1px solid #cbd5e1;
+    }
+
+    .modal-shot img {
+      width: 100%;
+      height: 100%;
+      min-height: 150px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .modal-shot-placeholder {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 18px;
+      text-align: center;
+      color: #475569;
+      font-weight: 900;
+      font-size: 0.9rem;
+      white-space: normal;
+    }
+
+    .modal-shot-placeholder small {
+      display: block;
+      margin-top: 4px;
+      color: #64748b;
+      font-size: 0.72rem;
+      overflow-wrap: anywhere;
+    }
+
+    .modal-shot:not(.is-missing) .modal-shot-placeholder { display: none; }
+
+    .modal-resource-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .modal-resource {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 13px 14px;
+      border-radius: 16px;
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      color: #0f172a;
+      font-weight: 850;
+    }
+
+    .modal-resource span {
+      color: #64748b;
+      font-size: 0.86rem;
+      font-weight: 700;
+    }
+
+    .modal-link-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 2px;
+    }
+
+    @media (max-width: 980px) {
+      .hero,
+      .project.featured { grid-template-columns: 1fr; }
+      .project.featured { grid-column: span 1; }
+      .project-grid,
+      .skills-grid,
+      .archive-grid { grid-template-columns: 1fr; }
+      .hero-meta { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 860px) {
+      .modal-section-grid,
+      .modal-gallery { grid-template-columns: 1fr; }
+      .project-modal { padding: 12px; }
+      .project-modal-panel { border-radius: 22px; }
+      .project-modal-hero,
+      .project-modal-content { padding: 22px; }
+    }
+
+    @media (max-width: 720px) {
+      .page { padding: 18px 14px 48px; }
+      .nav {
+        position: static;
+        border-radius: 20px;
+        align-items: flex-start;
+        flex-direction: column;
+      }
+      .nav-links {
+        width: 100%;
+        overflow-x: auto;
+        padding-bottom: 2px;
+      }
+      .hero-main,
+      .section { padding: 24px; }
+      .hero-side { padding: 16px; }
+      .section-header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+      .timeline-item { grid-template-columns: 1fr; }
+      .project { min-height: auto; }
+      .project-modal-top { gap: 12px; }
+      .project-modal-close { width: 38px; height: 38px; }
+    }
+
+  </style>
 </head>
 <body>
-    <div class="container">
-        <header class="header">
-            <div class="profile-section">
-                <div class="profile-image">
-                    <img src="profile.jpeg" alt="Profile Picture">
-                    <i class="fas fa-user"></i>
-                </div>
-                
-                <div class="profile-info">
-                    <h1>masterjms</h1>
-                    <div class="title">Frontend to DevOps Developer</div>
-                    <div class="description">
-                        프론트엔드 개발자로 시작하여 실제 서비스 운영을 통해 <span class="highlight">DevOps의 매력</span>을 체감하며 성장하고 있는 개발자입니다. 
-                        지속 가능한 인프라 운영과 배포 자동화, 그리고 <span class="highlight">AI 기반 운영 시스템 최적화</span>에 관심을 가지고 있습니다.
-                    </div>
-                </div>
+  <div class="page">
+    <nav class="nav" aria-label="Primary Navigation">
+      <a href="#top" class="brand">
+        <span class="brand-mark">J</span>
+        <span>jang minsung</span>
+      </a>
+      <div class="nav-links">
+        <a href="#projects">Projects</a>
+        <a href="#skills">Skills</a>
+        <a href="#timeline">Experience</a>
+        <a href="#archive">Archive</a>
+        <a href="https://github.com/masterjms" target="_blank" rel="noreferrer">GitHub</a>
+      </div>
+    </nav>
+
+    <header id="top" class="hero">
+      <section class="hero-main">
+        <div>
+          <span class="eyebrow"><i class="fa-solid fa-code-branch"></i> Project-driven Developer Portfolio</span>
+          <h1><span class="gradient-text">서비스를 이해하고, 병목을 찾아, 끝까지 개선하는 개발자</span></h1>
+          <p class="hero-description">
+            프론트엔드에서 시작해 백엔드, 비동기 처리, 데이터 파이프라인, 인프라 운영까지 확장하고 있습니다.
+            단순히 화면이나 기능을 만드는 것보다, 실제 서비스가 어디서 느려지고 왜 불안정해지는지 추적하고
+            구조적으로 개선하는 일에 관심이 많습니다.
+          </p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="#projects"><i class="fa-solid fa-rocket"></i> 대표 프로젝트 보기</a>
+            <a class="btn btn-secondary" href="mailto:mstoto0319@gmail.com"><i class="fa-solid fa-envelope"></i> Contact</a>
+            <a class="btn btn-secondary" href="https://github.com/masterjms?tab=repositories" target="_blank" rel="noreferrer"><i class="fa-brands fa-github"></i> Repositories</a>
+          </div>
+        </div>
+
+        <div class="hero-meta">
+          <div class="metric">
+            <strong>Production Backend</strong>
+            <span>SFVibe Django 서버 기능 개선 및 비동기 처리 전환</span>
+          </div>
+          <div class="metric">
+            <strong>Team AI Service</strong>
+            <span>AlgoReview 코드 리뷰 UX/UI와 리뷰 요청 흐름 구현</span>
+          </div>
+          <div class="metric">
+            <strong>Data · Edge</strong>
+            <span>ML 분류, 스마트팩토리 시뮬레이터, IoT 서버 실험</span>
+          </div>
+        </div>
+      </section>
+
+      <aside class="hero-side">
+        <div class="profile-card">
+          <div class="profile-image">
+            <img src="profile.jpeg" alt="장민성 프로필 사진" />
+          </div>
+          <div>
+            <div class="profile-name">장민성 · masterjms</div>
+            <div class="profile-role">Full-Stack / DevOps Developer</div>
+          </div>
+          <div class="contact-list">
+            <a href="https://github.com/masterjms" target="_blank" rel="noreferrer"><i class="fa-brands fa-github"></i> github.com/masterjms</a>
+            <a href="mailto:mstoto0319@gmail.com"><i class="fa-solid fa-envelope"></i> mstoto0319@gmail.com</a>
+            <span><i class="fa-solid fa-location-dot"></i> South Korea</span>
+          </div>
+        </div>
+
+        <div class="focus-card">
+          <h3>비전</h3>
+          <p>
+            서비스의 문제를 기술적으로 해결하고, 프론트엔드·백엔드·인프라를 연결해 실제로 운영 가능한 시스템을 만드는 개발자로 성장하고자 합니다.
+          </p>
+        </div>
+
+        <div class="focus-card">
+          <h3>관심 영역</h3>
+          <p>
+            비동기 워커, API 서버, 배포 자동화, 관측 가능성, 데이터 기반 서비스 개선, AI/LLM을 활용한 개발 생산성 향상.
+          </p>
+        </div>
+      </aside>
+    </header>
+
+    <section id="projects" class="section">
+      <div class="section-header">
+        <div>
+          <div class="section-kicker">Featured Projects</div>
+          <h2>프로젝트 중심으로 보는 성장 과정</h2>
+        </div>
+        <p class="section-lead">
+          공개 레포지토리와 실제 프로덕션 경험을 기준으로 정리했습니다.
+          카드를 클릭하면 상세 자료, 기여 내용, 배운 점을 볼 수 있습니다.
+        </p>
+      </div>
+      <div class="project-grid">
+
+        <article class="project featured" data-project="sfvibe" tabindex="0">
+          <div class="project-visual">
+            <span class="project-label">Private Company Repo · Backend</span>
+            <i class="project-icon fa-solid fa-city"></i>
+            <div>
+              <h3>SFVibe · Local Event Platform Backend</h3>
+              <p>미국 직무체험 중 참여한 프로덕션 Django 백엔드 개선 프로젝트</p>
             </div>
-            
-            <div class="social-links">
-                <a href="https://github.com/masterjms" target="_blank" title="GitHub">
-                    <i class="fab fa-github"></i>
-                </a>
-                <a href="mailto:mstoto0319@gmail.com" title="Email">
-                    <i class="fas fa-envelope"></i>
-                </a>
-                <!-- <a href="https://linkedin.com/in/yourprofile" target="_blank" title="LinkedIn">
-                    <i class="fab fa-linkedin"></i>
-                </a>
-                <a href="https://your-blog.com" target="_blank" title="Blog">
-                    <i class="fas fa-blog"></i>
-                </a> -->
+          </div>
+          <div class="project-body">
+            <h3>프로덕션 환경에서 동기 처리 병목을 Celery 기반 비동기 구조로 전환</h3>
+            <p class="project-summary">이미 운영 중인 복잡한 Django 프로젝트에 합류해 URL 추출, 이메일 기반 이벤트 수집, 앱스토어 기능, 인증 흐름을 개선했습니다. 레포지토리는 회사 Private 저장소라 공개하지 않습니다.</p>
+            <div class="tags"><span class="tag">Django</span>
+<span class="tag">Celery</span>
+<span class="tag">Redis</span>
+<span class="tag">PostgreSQL</span>
+<span class="tag">Mailgun Webhook</span>
+<span class="tag">GCP Cloud Storage</span>
+<span class="tag">SIWE</span></div>
+            <div class="detail-block">
+              <div>
+                <strong><i class="fa-solid fa-screwdriver-wrench"></i> 기여한 점</strong>
+                <ul><li>Django 서버에서 직접 처리하던 URL 추출/이벤트 처리 흐름을 Celery 워커 기반으로 분리</li>
+<li>단일 URL, 다중 URL 배치, 이메일 URL 수집 태스크를 역할별로 나누고 큐를 목적별로 분리</li>
+<li>Mailgun 웹훅, HTML 파싱, 리다이렉트 추적, 플랫폼 필터링을 통한 이메일 기반 이벤트 자동 수집 구현</li></ul>
+              </div>
+              <div>
+                <strong><i class="fa-solid fa-seedling"></i> 배운 점</strong>
+                <ul><li>규모 있는 프로덕션 코드에서는 AI보다 먼저 사람이 데이터 흐름과 함수 책임을 이해해야 한다는 점</li>
+<li>비동기 처리 설계에서는 태스크 책임 분리, 재시도 정책, rate limiting, 큐 분리가 중요하다는 점</li></ul>
+              </div>
             </div>
-        </header>
-
-        <main class="main-content">
-            <div class="card">
-                <h2><i class="fas fa-user-graduate"></i>Education & Background</h2>
-                <div class="info-item">
-                    <i class="fas fa-university"></i>
-                    <span>경영공학과 / 단국대학교 천안캠퍼스</span>
-                </div>
-                <div class="info-item">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <span>Kyoung-gi-do, South Korea</span>
-                </div>
-                <div class="info-item">
-                    <i class="fas fa-calendar-alt"></i>
-                    <span>2026년 졸업 예정</span>
-                </div>
-                <div class="info-item">
-                    <i class="fas fa-trophy"></i>
-                    <span>주요 수상 경력 또는 자격증</span>
-                </div>
+            <div class="project-links">
+              <a class="project-link" href="https://sfvibe.fun/" target="_blank" rel="noreferrer"><i class="fa-solid fa-up-right-from-square"></i> Live Site</a>
+<span class="project-link secondary"><i class="fa-solid fa-lock"></i> Private Repo</span>
+<button class="project-link button-like secondary" type="button" data-open-project="sfvibe"><i class="fa-solid fa-images"></i> 자세히 보기</button>
             </div>
+          </div>
+        </article>
 
-            <div class="card">
-                <h2><i class="fas fa-code"></i>Tech Stack</h2>
-                
-                <h3 style="margin: 1.5rem 0 1rem 0; color: #4a5568; font-size: 1.1rem;">Frontend</h3>
-                <div class="tech-stack">
-                    <span class="tech-item">JavaScript</span>
-                    <span class="tech-item">TypeScript</span>
-                    <span class="tech-item">React</span>
-                    <span class="tech-item">Vue.js</span>
-                    <span class="tech-item">HTML/CSS</span>
-                </div>
-
-                <h3 style="margin: 1.5rem 0 1rem 0; color: #4a5568; font-size: 1.1rem;">DevOps & Infrastructure</h3>
-                <div class="tech-stack">
-                    <span class="tech-item">Docker</span>
-                    <span class="tech-item">GitHub Actions</span>
-                    <span class="tech-item">AWS</span>
-                    <span class="tech-item">Nginx</span>
-                    <span class="tech-item">Prometheus</span>
-                    <span class="tech-item">Grafana</span>
-                    <span class="tech-item">Sentry</span>
-                </div>
-
-                <h3 style="margin: 1.5rem 0 1rem 0; color: #4a5568; font-size: 1.1rem;">AI & Others</h3>
-                <div class="tech-stack">
-                    <span class="tech-item">Python</span>
-                    <span class="tech-item">OpenAI API</span>
-                    <span class="tech-item">LLM</span>
-                    <span class="tech-item">Git</span>
-                </div>
+        <article class="project featured" data-project="algorivew" tabindex="0">
+          <div class="project-visual purple">
+            <span class="project-label">Team Project · Frontend / UX UI</span>
+            <i class="project-icon fa-solid fa-code-compare"></i>
+            <div>
+              <h3>AlgoReview · AI Code Review Service</h3>
+              <p>생성형 AI를 활용하는 코딩테스트 학습자를 위한 코드 리뷰 플랫폼</p>
             </div>
-
-            <div class="card">
-                <h2><i class="fas fa-briefcase"></i>Experience</h2>
-                <div class="info-item">
-                    <i class="fas fa-building"></i>
-                    <div>
-                        <strong>단국대 / 소속</strong><br>
-                        <span style="color: #718096; font-size: 0.9rem;">2021.03 - Present</span>
-                    </div>
-                </div>
-                <div class="info-item">
-                    <i class="fas fa-code-branch"></i>
-                    <div>
-                        <strong>CI/CD 파이프라인 구축 및 운영</strong><br>
-                        <span style="color: #718096; font-size: 0.9rem;">GitHub Actions를 활용한 배포 자동화</span>
-                    </div>
-                </div>
-                <div class="info-item">
-                    <i class="fas fa-code-branch"></i>
-                    <div>
-                        <strong>AI API를 활용 웹 페이지 기획 및 개발</strong><br>
-                        <span style="color: #718096; font-size: 0.9rem;">GPT & Gemini API prompt Engineering</span>
-                    </div>
-                </div>
-                <div class="info-item">
-                    <i class="fas fa-cloud"></i>
-                    <div>
-                        <strong>AWS 클라우드 마이그레이션</strong><br>
-                        <span style="color: #718096; font-size: 0.9rem;">S3, EC2, VPC를 활용한 인프라 구축</span>
-                    </div>
-                </div>
+          </div>
+          <div class="project-body">
+            <h3>코드 입력부터 AI 리뷰, 피드백 확인, 학습 히스토리까지 이어지는 리뷰 UX 구현</h3>
+            <p class="project-summary">TABA 7기 팀 프로젝트로 진행한 AI 코드 리뷰 서비스입니다. 사용자는 문제 URL 또는 파일을 등록하고, 코드를 입력한 뒤 AI 기반 피드백과 개선 방향을 받을 수 있습니다.</p>
+            <div class="tags"><span class="tag">React 19</span>
+<span class="tag">TypeScript</span>
+<span class="tag">Vite</span>
+<span class="tag">PrimeReact</span>
+<span class="tag">CodeMirror</span>
+<span class="tag">Framer Motion</span>
+<span class="tag">Axios</span></div>
+            <div class="detail-block">
+              <div>
+                <strong><i class="fa-solid fa-screwdriver-wrench"></i> 기여한 점</strong>
+                <ul><li>홈 화면, 튜토리얼, 리뷰 페이지 흐름을 사용자 학습 경험 중심으로 구성</li>
+<li>코드 입력 에디터, 리뷰 결과 피드백, 통과 여부 팝업 등 리뷰 중심 UI 구현</li>
+<li>리뷰 요청 API 연동 구조를 프론트엔드에서 연결하고, 리뷰 히스토리 갱신 흐름 처리</li>
+<li>팀 프로젝트에서 FrontEnd / UX·UI 역할을 맡아 사용자가 이해하기 쉬운 화면 흐름 설계</li></ul>
+              </div>
+              <div>
+                <strong><i class="fa-solid fa-seedling"></i> 배운 점</strong>
+                <ul><li>AI 기능은 모델 성능뿐 아니라 사용자가 피드백을 이해하고 다시 시도하게 만드는 UX가 중요하다는 점</li>
+<li>프론트엔드에서도 API 요청 상태, 로딩, 히스토리, 결과 반영 흐름을 명확히 관리해야 한다는 점</li>
+<li>팀 프로젝트에서는 역할 분리와 화면-API 계약이 개발 속도와 안정성에 큰 영향을 준다는 점</li></ul>
+              </div>
             </div>
-
-            <div class="card">
-                <h2><i class="fas fa-rocket"></i>Projects</h2>
-                <div class="projects-grid">
-                    <div class="project-card" onclick="window.open('https://github.com/masterjms/project1', '_blank')">
-                        <h3>🚀 AI 기반 모니터링 시스템</h3>
-                        <p>Prometheus와 Grafana로 수집한 데이터를 기반으로 한 예측 분석 모델 구축</p>
-                        <div class="project-links">
-                            <a href="https://github.com/masterjms/project1" target="_blank">
-                                <i class="fab fa-github"></i> GitHub
-                            </a>
-                            <a href="https://project1-demo.com" target="_blank">
-                                <i class="fas fa-external-link-alt"></i> Demo
-                            </a>
-                        </div>
-                    </div>
-                    
-                    <div class="project-card" onclick="window.open('https://github.com/masterjms/project2', '_blank')">
-                        <h3>⚙️ CI/CD 파이프라인 템플릿</h3>
-                        <p>재사용 가능한 GitHub Actions 워크플로우와 Docker 기반 배포 시스템</p>
-                        <div class="project-links">
-                            <a href="https://github.com/masterjms/project2" target="_blank">
-                                <i class="fab fa-github"></i> GitHub
-                            </a>
-                        </div>
-                    </div>
-                    
-                    <div class="project-card" onclick="window.open('https://github.com/taba7-algorivew', '_blank')">
-                        <h3>🤖 LLM 기반 코드 리뷰 자동화</h3>
-                        <p>OpenAI API를 활용한 코드 품질 분석 및 자동 리뷰 시스템</p>
-                        <div class="project-links">
-                            <a href="https://github.com/masterjms/project3" target="_blank">
-                                <i class="fab fa-github"></i> GitHub
-                            </a>
-                            <a href="https://project3-demo.com" target="_blank">
-                                <i class="fas fa-external-link-alt"></i> Demo
-                            </a>
-                        </div>
-                    </div>
-                    
-                    <div class="project-card" onclick="window.open('https://github.com/masterjms/project4', '_blank')">
-                        <h3>📊 운영 데이터 대시보드</h3>
-                        <p>실시간 서비스 메트릭과 로그 분석을 위한 종합 대시보드</p>
-                        <div class="project-links">
-                            <a href="https://github.com/masterjms/project4" target="_blank">
-                                <i class="fab fa-github"></i> GitHub
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                
-                <div style="text-align: center; margin-top: 2rem;">
-                    <a href="https://github.com/masterjms?tab=repositories" target="_blank" 
-                       style="display: inline-flex; align-items: center; gap: 0.5rem; color: #667eea; text-decoration: none; font-weight: 500;">
-                        <i class="fas fa-arrow-right"></i>
-                        모든 프로젝트 보기
-                    </a>
-                </div>
+            <div class="project-links">
+              <a class="project-link" href="https://github.com/orgs/taba7-algorivew/repositories" target="_blank" rel="noreferrer"><i class="fa-brands fa-github"></i> Organization</a>
+<a class="project-link" href="https://github.com/taba7-algorivew/front" target="_blank" rel="noreferrer"><i class="fa-solid fa-display"></i> Front</a>
+<a class="project-link" href="https://github.com/taba7-algorivew/backend" target="_blank" rel="noreferrer"><i class="fa-solid fa-server"></i> Backend</a>
+<button class="project-link button-like secondary" type="button" data-open-project="algorivew"><i class="fa-solid fa-images"></i> 자세히 보기</button>
             </div>
+          </div>
+        </article>
 
-            <div class="card">
-                <h2><i class="fas fa-heart"></i>Interests</h2>
-                <div class="info-item">
-                    <i class="fas fa-robot"></i>
-                    <span><strong>AI 운영 시스템:</strong> LLM을 활용한 운영 자동화 및 예측 분석</span>
-                </div>
-                <div class="info-item">
-                    <i class="fas fa-chart-line"></i>
-                    <span><strong>데이터 기반 인사이트:</strong> 시스템 로그와 메트릭을 통한 성능 최적화</span>
-                </div>
-                <div class="info-item">
-                    <i class="fas fa-cogs"></i>
-                    <span><strong>인프라 자동화:</strong> 안정적이고 확장 가능한 시스템 구축</span>
-                </div>
-                <div class="info-item">
-                    <i class="fas fa-lightbulb"></i>
-                    <span><strong>프롬프트 엔지니어링:</strong> 정확하고 효율적인 AI 활용 방법 연구</span>
-                </div>
+        <article class="project" data-project="suman" tabindex="0">
+          <div class="project-visual alt">
+            <span class="project-label">Company Website · Frontend</span>
+            <i class="project-icon fa-solid fa-building"></i>
+            <div>
+              <h3>SUMAN Company Website</h3>
+              <p>기업 소개부터 사업/제품, 채용, 고객지원까지 이어지는 Next.js 회사 웹사이트</p>
             </div>
-        </main>
+          </div>
+          <div class="project-body">
+            <h3>기업 소개부터 사업/제품, 채용, 고객지원까지 이어지는 Next.js 회사 웹사이트</h3>
+            <p class="project-summary">Next.js 기반 회사 소개 사이트입니다. 회사 소개, 사업/제품, 채용, FAQ, 문의 폼 등 실제 기업 홈페이지에 필요한 페이지 구조를 설계했습니다.</p>
+            <div class="tags"><span class="tag">Next.js 15</span>
+<span class="tag">TypeScript</span>
+<span class="tag">Tailwind CSS</span>
+<span class="tag">Zustand</span>
+<span class="tag">Recharts</span>
+<span class="tag">Framer Motion</span></div>
+            <div class="detail-block">
+              <div>
+                <strong><i class="fa-solid fa-screwdriver-wrench"></i> 기여한 점</strong>
+                <ul><li>기업 소개, 서비스/제품, 채용, 고객지원으로 이어지는 정보 구조 설계</li>
+<li>정적 빌드와 SEO를 고려한 Next.js 기반 프론트엔드 구성</li></ul>
+              </div>
+              <div>
+                <strong><i class="fa-solid fa-seedling"></i> 배운 점</strong>
+                <ul><li>단순히 예쁜 페이지보다 회사의 사업 흐름이 보이는 정보 설계가 중요하다는 점</li></ul>
+              </div>
+            </div>
+            <div class="project-links">
+              <a class="project-link" href="https://github.com/masterjms/suman_project_FE" target="_blank" rel="noreferrer"><i class="fa-brands fa-github"></i> GitHub</a>
+<button class="project-link button-like secondary" type="button" data-open-project="suman"><i class="fa-solid fa-images"></i> 자세히 보기</button>
+            </div>
+          </div>
+        </article>
 
-        <footer class="footer">
-            <p>&copy; 2024 masterjms. Built with passion for DevOps and AI.</p>
-            <p style="margin-top: 0.5rem; font-size: 0.9rem; opacity: 0.8;">
-                "면접 때는 나를 온전히 드러내야 하고, 맞지 않으면 담담하게 받아들인다."
-            </p>
-        </footer>
+        <article class="project" data-project="sorting" tabindex="0">
+          <div class="project-visual green">
+            <span class="project-label">Algorithm · Logistics</span>
+            <i class="project-icon fa-solid fa-cubes-stacked"></i>
+            <div>
+              <h3>3D Sorting System 알고리즘</h3>
+              <p>3D 분류기의 특성을 분석하고, 이를 기반으로 최적화 알고리즘을 개발</p>
+            </div>
+          </div>
+          <div class="project-body">
+            <h3>3D Sorting System 알고리즘</h3>
+            <p class="project-summary">3D 분류기의 특성을 분석하고, 이를 기반으로 최적화 알고리즘을 개발하는 프로젝트입니다.</p>
+            <div class="tags"><span class="tag">Python</span>
+<span class="tag">3D Packing</span>
+<span class="tag">Heuristic</span>
+<span class="tag">Scheduling</span>
+<span class="tag">Optimization</span></div>
+            <div class="detail-block">
+              <div>
+                <strong><i class="fa-solid fa-screwdriver-wrench"></i> 기여한 점</strong>
+                <ul><li>3D 분류기의 특성 분석 - 기존 O2CP 최적화의 한계 파악 및 해결방안 도출</li>
+<li>셔틀과 AMR대기시간을 고려한 MIP 전략 비교</li></ul>
+              </div>
+              <div>
+                <strong><i class="fa-solid fa-seedling"></i> 배운 점</strong>
+                <ul><li>현실의 물류 문제를 산업공학적 관점에서 접근하여 수리적으로 공식화하고, 이를 코드화하여 해결할 수 있다는 점</li></ul>
+              </div>
+            </div>
+            <div class="project-links">
+              <a class="project-link" href="https://github.com/masterjms/3D_sorting_system" target="_blank" rel="noreferrer"><i class="fa-brands fa-github"></i> GitHub</a>
+<button class="project-link button-like secondary" type="button" data-open-project="sorting"><i class="fa-solid fa-images"></i> 자세히 보기</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="project" data-project="card" tabindex="0">
+          <div class="project-visual orange">
+            <span class="project-label">Machine Learning</span>
+            <i class="project-icon fa-solid fa-chart-simple"></i>
+            <div>
+              <h3>AI Card Segment Classification</h3>
+              <p>XGBoost, LightGBM, CatBoost 기반의 세그먼트 분류 파이프라인</p>
+            </div>
+          </div>
+          <div class="project-body">
+            <h3>XGBoost, LightGBM, CatBoost 기반의 세그먼트 분류 파이프라인</h3>
+            <p class="project-summary">카드 고객 세그먼트를 예측하기 위해 XGBoost, LightGBM, CatBoost 기반의 앙상블/캐스케이드 분류 흐름을 구성한 ML 프로젝트입니다.</p>
+            <div class="tags"><span class="tag">XGBoost</span>
+<span class="tag">LightGBM</span>
+<span class="tag">CatBoost</span>
+<span class="tag">Pandas</span>
+<span class="tag">Scikit-learn</span></div>
+            <div class="detail-block">
+              <div>
+                <strong><i class="fa-solid fa-screwdriver-wrench"></i> 기여한 점</strong>
+                <ul><li>클래스별 threshold를 적용한 단계별 cascade 예측 흐름 구성</li>
+<li>A/B 구간 전용 모델을 분리해 잔여 샘플을 다시 분류하는 구조 실험</li></ul>
+              </div>
+              <div>
+                <strong><i class="fa-solid fa-seedling"></i> 배운 점</strong>
+                <ul><li>정확도 개선은 모델 하나보다 데이터 전처리, threshold, 클래스별 전략이 함께 작동해야 한다는 점</li></ul>
+              </div>
+            </div>
+            <div class="project-links">
+              <a class="project-link" href="https://github.com/masterjms/AI_card_segment" target="_blank" rel="noreferrer"><i class="fa-brands fa-github"></i> GitHub</a>
+<button class="project-link button-like secondary" type="button" data-open-project="card"><i class="fa-solid fa-images"></i> 자세히 보기</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="project" data-project="factory" tabindex="0">
+          <div class="project-visual dark">
+            <span class="project-label">Smart Factory · Edge</span>
+            <i class="project-icon fa-solid fa-industry"></i>
+            <div>
+              <h3>Smart Factory Edge Simulator</h3>
+              <p>사출기 상태 전이와 공정 변수를 생성하는 스마트팩토리 L1 시뮬레이터</p>
+            </div>
+          </div>
+          <div class="project-body">
+            <h3>사출기 상태 전이와 공정 변수를 생성하는 스마트팩토리 L1 시뮬레이터</h3>
+            <p class="project-summary">사출기 내부 상태와 공정 변수를 흉내 내고, 외부에서 읽을 수 있는 태그 레지스트리를 제공하는 스마트팩토리 L1 시뮬레이터입니다.</p>
+            <div class="tags"><span class="tag">Python</span>
+<span class="tag">Factory Simulation</span>
+<span class="tag">Tag Registry</span>
+<span class="tag">Edge Computing</span></div>
+            <div class="detail-block">
+              <div>
+                <strong><i class="fa-solid fa-screwdriver-wrench"></i> 기여한 점</strong>
+                <ul><li>IDLE, READY, RUN, STOP/ALARM 상태 전이를 갖는 설비 상태 모델 구현</li>
+<li>샷 카운트, 양품/불량 카운트, 온도/압력/사이클타임 등 핵심 공정 변수 생성</li></ul>
+              </div>
+              <div>
+                <strong><i class="fa-solid fa-seedling"></i> 배운 점</strong>
+                <ul><li>제조 데이터 시스템은 센서값 생성보다 상태 모델과 태그 네이밍 체계가 먼저 잡혀야 한다는 점</li></ul>
+              </div>
+            </div>
+            <div class="project-links">
+              <a class="project-link" href="https://github.com/masterjms/smart-factory-edge-simulator" target="_blank" rel="noreferrer"><i class="fa-brands fa-github"></i> GitHub</a>
+<button class="project-link button-like secondary" type="button" data-open-project="factory"><i class="fa-solid fa-images"></i> 자세히 보기</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="project" data-project="radio" tabindex="0">
+          <div class="project-visual red">
+            <span class="project-label">IoT · Backend Experiment</span>
+            <i class="project-icon fa-solid fa-tower-broadcast"></i>
+            <div>
+              <h3>IoT Radio Server</h3>
+              <p>IoT 라디오/방송 장비 제어를 위한 Python 비동기 서버 실험</p>
+            </div>
+          </div>
+          <div class="project-body">
+            <h3>IoT 라디오/방송 장비 제어를 위한 Python 비동기 서버 실험</h3>
+            <p class="project-summary">IoT 라디오/방송 장비 제어를 위한 서버 실험 프로젝트입니다. Python 비동기 서버와 인증 구조를 기반으로 설계했습니다.</p>
+            <div class="tags"><span class="tag">Python</span>
+<span class="tag">aiohttp</span>
+<span class="tag">JWT</span>
+<span class="tag">bcrypt</span>
+<span class="tag">IoT Backend</span></div>
+            <div class="detail-block">
+              <div>
+                <strong><i class="fa-solid fa-screwdriver-wrench"></i> 기여한 점</strong>
+                <ul><li>장비와 서버 사이의 제어/인증 흐름을 고려한 백엔드 구조 실험</li>
+<li>비동기 HTTP/WebSocket 기반 확장을 염두에 둔 Python 서버 스택 선정</li></ul>
+              </div>
+              <div>
+                <strong><i class="fa-solid fa-seedling"></i> 배운 점</strong>
+                <ul><li>IoT 서버는 연결 안정성, 인증, 네트워크 환경 변화 대응이 중요하다는 점</li></ul>
+              </div>
+            </div>
+            <div class="project-links">
+              <a class="project-link" href="https://github.com/masterjms/IoT_radio_server" target="_blank" rel="noreferrer"><i class="fa-brands fa-github"></i> GitHub</a>
+<button class="project-link button-like secondary" type="button" data-open-project="radio"><i class="fa-solid fa-images"></i> 자세히 보기</button>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="skills" class="section">
+      <div class="section-header">
+        <div>
+          <div class="section-kicker">Skills</div>
+          <h2>문제 해결 역량</h2>
+        </div>
+        <p class="section-lead">
+          프로젝트에서 어떤 문제를 다루며 익혔는지를 기준으로 정리했습니다.
+        </p>
+      </div>
+      <div class="skills-grid">
+
+        <div class="skill-card">
+          <i class="fa-solid fa-server"></i>
+          <h3>Backend / API</h3>
+          <p>Django, REST API, 인증 흐름, PostgreSQL, Redis, 백엔드 구조 개선과 데이터 흐름 분석</p>
+        </div>
+
+        <div class="skill-card">
+          <i class="fa-solid fa-gears"></i>
+          <h3>Async Worker</h3>
+          <p>Celery 기반 비동기 태스크, 큐 분리, 재시도 정책, rate limiting, 배치 처리</p>
+        </div>
+
+        <div class="skill-card">
+          <i class="fa-solid fa-laptop-code"></i>
+          <h3>Frontend</h3>
+          <p>React, Next.js, TypeScript, Vite, Tailwind, PrimeReact 기반 화면/UX 구성</p>
+        </div>
+
+        <div class="skill-card">
+          <i class="fa-solid fa-chart-line"></i>
+          <h3>Data / AI</h3>
+          <p>Pandas, Scikit-learn, XGBoost, LightGBM, CatBoost, 데이터 전처리와 추론 파이프라인</p>
+        </div>
+
+        <div class="skill-card">
+          <i class="fa-solid fa-cloud-arrow-up"></i>
+          <h3>DevOps / Infra</h3>
+          <p>GitHub Actions, Render, Nginx, AWS 학습, 배포 자동화와 운영 안정성에 관심</p>
+        </div>
+
+        <div class="skill-card">
+          <i class="fa-solid fa-magnifying-glass-chart"></i>
+          <h3>Observability</h3>
+          <p>로그 분석, 장애 재현, 성능 병목 추적, 운영 관점의 개선 포인트 도출</p>
+        </div>
+
+        <div class="skill-card">
+          <i class="fa-solid fa-microchip"></i>
+          <h3>Edge / IoT</h3>
+          <p>스마트팩토리 설비 시뮬레이션, 태그 레지스트리, IoT 서버 구조, 장비 통신 흐름 설계</p>
+        </div>
+
+        <div class="skill-card">
+          <i class="fa-solid fa-robot"></i>
+          <h3>AI-assisted Development</h3>
+          <p>AI에게 맡기기 전에 사람이 코드 흐름을 이해하고, 명확한 계획과 프롬프트로 생산성 향상</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="timeline" class="section">
+    <div class="section-header">
+        <div>
+        <div class="section-kicker">Experience</div>
+        <h2>성장 과정</h2>
+        </div>
+        <p class="section-lead">
+        개발을 처음 시작했을 때부터 꾸준히 공부하며 성장과정을 남겨왔습니다.
+        </p>
     </div>
 
-    <script>
-        // 부드러운 스크롤 애니메이션
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
+    <div class="timeline">
+        <div class="timeline-item">
+        <div class="timeline-date">2021 · Fundamentals</div>
+        <div>
+            <div class="timeline-title">Programming Fundamentals · 개발 언어와 Git 학습</div>
+            <div class="timeline-desc">
+            개발을 처음 시작하며 C, JavaScript, Python 등 기본 문법과 자료구조를 학습했습니다.
+            이 시기에는 프로그램이 위에서 아래로 어떻게 실행되는지, 변수와 함수가 어떤 방식으로 동작하는지,
+            GitHub에 코드를 기록하고 관리하는 기본 습관을 익히는 데 집중했습니다.
+            개발의 출발점은 단순한 기능 구현보다 <strong>코드가 동작하는 원리를 이해하는 것</strong>이었습니다.
+            </div>
+        </div>
+        </div>
 
-        // 카드 애니메이션 효과
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
+        <div class="timeline-item">
+        <div class="timeline-date">2022 · Server/API</div>
+        <div>
+            <div class="timeline-title">Crypto Auto Trading · AWS 기반 비트코인 자동매매 실험</div>
+            <div class="timeline-desc">
+            단순한 문법과 자료구조 학습을 넘어, 실제 외부 API를 호출하고 서버에서 프로그램을 실행하는
+            <strong>개발의 영역</strong>으로 넘어간 시기였습니다.
+            Python으로 거래소 API를 연동하고, AWS Ubuntu 서버에서 자동매매 로직을 실행하며
+            서버 환경 설정, API 요청/응답, 로그 확인, 장시간 동작하는 프로그램 관리 방식을 경험했습니다.
+            이 프로젝트를 통해 “코드를 짜는 것”과 “서비스처럼 계속 돌아가는 프로그램을 만드는 것”의 차이를 배웠습니다.
+            </div>
+        </div>
+        </div>
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
+        <div class="timeline-item">
+        <div class="timeline-date">2023 · Frontend</div>
+        <div>
+            <div class="timeline-title">ReactPractice · 화면을 구조화하는 프론트엔드 학습</div>
+            <div class="timeline-desc">
+            서버와 API에 대한 관심이 생긴 뒤, 사용자가 실제로 마주하는 화면을 어떻게 구성하는지 배우기 위해
+            React와 JavaScript 기반 프론트엔드 학습을 진행했습니다.
+            컴포넌트, props, state, 이벤트 처리, 라우팅을 익히며 하나의 화면을 작은 단위로 나누고 재사용하는 방식을 배웠습니다.
+            이 시기를 통해 개발은 로직만이 아니라 <strong>사용자가 이해하고 조작할 수 있는 인터페이스를 만드는 일</strong>이라는 점을 알게 되었습니다.
+            </div>
+        </div>
+        </div>
 
-        document.querySelectorAll('.card').forEach((card, index) => {
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(20px)';
-            card.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
-            observer.observe(card);
-        });
-    </script>
+        <div class="timeline-item">
+        <div class="timeline-date">2024 · Team/AI</div>
+        <div>
+            <div class="timeline-title">AlgoReview · AI 코드 리뷰 팀 프로젝트</div>
+            <div class="timeline-desc">
+            개인 학습 중심에서 벗어나 팀원들과 역할을 나누고 하나의 서비스를 완성하는 경험을 했습니다.
+            AlgoReview에서는 생성형 AI를 활용해 코딩테스트 학습자에게 코드 리뷰와 개선 방향을 제공하는 서비스를 개발했습니다.
+            Frontend / UX·UI 역할을 맡아 랜딩 페이지, 튜토리얼, 리뷰 페이지, 코드 입력, 피드백 출력, 히스토리 갱신 흐름을 구현했습니다.
+            이 프로젝트를 통해 AI 기능 자체보다 <strong>사용자가 피드백을 이해하고 다시 개선할 수 있는 서비스 흐름</strong>이 중요하다는 점을 배웠습니다.
+            </div>
+        </div>
+        </div>
+
+        <div class="timeline-item">
+        <div class="timeline-date">2025 · Production</div>
+        <div>
+            <div class="timeline-title">SFVibe Backend Developer · 미국 직무체험</div>
+            <div class="timeline-desc">
+            처음으로 이미 운영 중인 프로덕션 코드베이스에 합류하여 백엔드 개발을 경험했습니다.
+            기존에 직접 만든 프로젝트와 달리, 복잡한 Django 구조와 데이터 흐름을 먼저 이해해야 했고,
+            그 위에서 URL 추출/이벤트 처리 시스템을 Celery 기반 비동기 구조로 전환했습니다.
+            이메일 자동 수집, App Store 기능, 인증 흐름 개선을 수행하며
+            개발은 새 기능을 만드는 것뿐 아니라 <strong>운영 중인 시스템의 병목을 찾고 안정적으로 개선하는 일</strong>이라는 점을 배웠습니다.
+            </div>
+        </div>
+        </div>
+
+        <div class="timeline-item">
+        <div class="timeline-date">2026 · IoT/Optimization</div>
+        <div>
+            <div class="timeline-title">Smart Factory Edge Simulator · 3D Sorting System Algorithm</div>
+            <div class="timeline-desc">
+            웹 서비스와 백엔드 경험을 바탕으로, 이제는 현장 장비와 서버가 연결되는 구조로 관심을 확장하였습니다.
+            실제 물류 장비의 병목을 분석하고 최적화 알고리즘을 설계하는 3D Sorting System 프로젝트를 진행하며 최적화 이론을 실제 문제에 적용하는 경험을 쌓았습니다.
+            또한 IoT 서버 프로젝트를 통해 장비 제어, 인증, 네트워크 연결 안정성까지 고민해보았습니다.
+            단순 웹 개발을 넘어 <strong>현장 데이터/장비가 엣지 장비를 거쳐 서버와 서비스로 이어지는 전체 흐름</strong>을 이해하는 경험이었습니다.
+            </div>
+        </div>
+        </div>
+    </div>
+    </section>
+
+    <section id="credentials" class="section">
+    <style>
+        .credentials-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.65fr);
+        gap: 18px;
+        }
+
+        .credential-panel {
+        padding: 24px;
+        border-radius: 24px;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid var(--line);
+        }
+
+        .credential-panel h3 {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 1.22rem;
+        letter-spacing: -0.035em;
+        margin-bottom: 18px;
+        }
+
+        .credential-panel h3 i {
+        color: #67e8f9;
+        }
+
+        .credential-list {
+        display: grid;
+        gap: 12px;
+        }
+
+        .credential-item {
+        display: grid;
+        grid-template-columns: 150px minmax(0, 1fr);
+        gap: 16px;
+        padding: 16px;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.055);
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        }
+
+        .credential-date {
+        color: #bae6fd;
+        font-size: 0.92rem;
+        font-weight: 900;
+        white-space: nowrap;
+        }
+
+        .credential-title {
+        color: #f8fafc;
+        font-weight: 900;
+        margin-bottom: 4px;
+        }
+
+        .credential-org {
+        color: var(--muted);
+        font-size: 0.92rem;
+        }
+
+        .credential-desc {
+        color: #cbd5e1;
+        font-size: 0.9rem;
+        margin-top: 6px;
+        }
+
+        .award-item {
+        padding: 18px;
+        border-radius: 20px;
+        background:
+            radial-gradient(circle at top right, rgba(245, 158, 11, 0.20), transparent 12rem),
+            rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(245, 158, 11, 0.28);
+        }
+
+        .award-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        width: fit-content;
+        padding: 6px 10px;
+        margin-bottom: 10px;
+        border-radius: 999px;
+        color: #fde68a;
+        background: rgba(245, 158, 11, 0.12);
+        border: 1px solid rgba(245, 158, 11, 0.24);
+        font-size: 0.82rem;
+        font-weight: 900;
+        }
+
+        .award-title {
+        color: #fff;
+        font-weight: 950;
+        font-size: 1.02rem;
+        margin-bottom: 5px;
+        }
+
+        .award-meta {
+        color: var(--muted);
+        font-size: 0.9rem;
+        }
+
+        .award-item + .award-item {
+        margin-top: 12px;
+        }
+
+        @media (max-width: 900px) {
+        .credentials-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .credential-item {
+            grid-template-columns: 1fr;
+        }
+        }
+    </style>
+
+    <div class="section-header">
+        <div>
+        <div class="section-kicker">Education & Achievements</div>
+        <h2>교육 및 성과</h2>
+        </div>
+        <p class="section-lead">
+        다양한 교육과정을 통해 개발 역량을 쌓고, 프로젝트와 대회에서 성과를 남겼습니다.
+        </p>
+    </div>
+
+    <div class="credentials-layout">
+        <div class="credential-panel">
+        <h3><i class="fa-solid fa-graduation-cap"></i> 교육 / 기관</h3>
+
+        <div class="credential-list">
+            <div class="credential-item">
+            <div class="credential-date">2021.07 ~ 2021.08</div>
+            <div>
+                <div class="credential-title">자바스크립트 스터디</div>
+                <div class="credential-org">단국대학교</div>
+            </div>
+            </div>
+
+            <div class="credential-item">
+            <div class="credential-date">2024.09 ~ 2024.11</div>
+            <div>
+                <div class="credential-title">DB 이론 및 응용 실습</div>
+                <div class="credential-org">단국대학교</div>
+            </div>
+            </div>
+
+            <div class="credential-item">
+            <div class="credential-date">2024.12 ~ 2025.02</div>
+            <div>
+                <div class="credential-title">SW융합개발자 양성과정 TABA 7기</div>
+                <div class="credential-org">한국클라우드컴퓨팅연구조합</div>
+            </div>
+            </div>
+
+            <div class="credential-item">
+            <div class="credential-date">2025.03 ~ 2025.06</div>
+            <div>
+                <div class="credential-title">빅데이터 분석 및 머신러닝</div>
+                <div class="credential-org">단국대학교</div>
+            </div>
+            </div>
+
+            <div class="credential-item">
+            <div class="credential-date">2025.04 ~ 2025.08</div>
+            <div>
+                <div class="credential-title">천안형 인재양성 교육과정</div>
+                <div class="credential-org">블루문드림</div>
+            </div>
+            </div>
+
+            <div class="credential-item">
+            <div class="credential-date">2025.09 ~ 2025.11</div>
+            <div>
+                <div class="credential-title">미국 실리콘밸리 인턴십</div>
+                <div class="credential-org">WASD3R</div>
+            </div>
+            </div>
+        </div>
+        </div>
+
+        <div class="credential-panel">
+        <h3><i class="fa-solid fa-trophy"></i> 수상 실적</h3>
+
+        <div class="award-item">
+            <div class="award-badge">
+            <i class="fa-solid fa-award"></i>
+            우수상
+            </div>
+            <div class="award-title">취업설계 경진대회</div>
+            <div class="award-meta">2024.11 · 단국대학교</div>
+            <div class="credential-desc">
+            개발자로 성장하기 위한 진로 설계와 포트폴리오 방향성을 구체화한 경험입니다.
+            </div>
+        </div>
+
+        <div class="award-item">
+            <div class="award-badge">
+            <i class="fa-solid fa-crown"></i>
+            최우수상
+            </div>
+            <div class="award-title">용인 ICT 해커톤 · AI Software Play</div>
+            <div class="award-meta">2025.08 · 용인시산업진흥원 / 경희대학교</div>
+            <div class="credential-desc">
+            제한된 시간 안에서 AI 기반 아이디어를 서비스 형태로 구체화하며,
+            문제 정의, 구현, 발표까지 연결하는 경험을 했습니다.
+            </div>
+        </div>
+        </div>
+    </div>
+    </section>
+
+    <section id="archive" class="section">
+      <div class="section-header">
+        <div>
+          <div class="section-kicker">Archive</div>
+          <h2>학습과 실험 레포지토리</h2>
+        </div>
+        <p class="section-lead">
+          대표 프로젝트는 아니지만, 현재 관심사와 성장 과정을 보여주는 레포지토리입니다.
+        </p>
+      </div>
+      <div class="archive-grid">
+
+        <a class="archive-card" href="https://github.com/masterjms/TABA_AI" target="_blank" rel="noreferrer">
+          <h3>TABA_AI</h3>
+          <p>OS, DB/SQL, AI, Tibero, 팀 프로젝트 중심의 산학연계 교육 기록</p>
+          <span><i class="fa-brands fa-github"></i> View Repository</span>
+        </a>
+
+        <a class="archive-card" href="https://github.com/masterjms/Bigdata_analysis" target="_blank" rel="noreferrer">
+          <h3>Bigdata_analysis</h3>
+          <p>Python, Jupyter Notebook, 데이터 클린징, 이상치, pandas 학습 기록</p>
+          <span><i class="fa-brands fa-github"></i> View Repository</span>
+        </a>
+
+        <a class="archive-card" href="https://github.com/masterjms/SQL_syntax" target="_blank" rel="noreferrer">
+          <h3>SQL_syntax</h3>
+          <p>SQL 문법과 데이터베이스 기초 학습 기록</p>
+          <span><i class="fa-brands fa-github"></i> View Repository</span>
+        </a>
+
+        <a class="archive-card" href="https://github.com/masterjms/ReactPractice" target="_blank" rel="noreferrer">
+          <h3>ReactPractice</h3>
+          <p>React 기초와 컴포넌트 구조 학습 레포지토리</p>
+          <span><i class="fa-brands fa-github"></i> View Repository</span>
+        </a>
+
+        <a class="archive-card" href="https://github.com/masterjms/JSpractice" target="_blank" rel="noreferrer">
+          <h3>JSpractice</h3>
+          <p>JavaScript 문법과 브라우저 기반 기능 실습</p>
+          <span><i class="fa-brands fa-github"></i> View Repository</span>
+        </a>
+
+        <a class="archive-card" href="https://github.com/masterjms/cryptoauto" target="_blank" rel="noreferrer">
+          <h3>cryptoauto</h3>
+          <p>초기 서버/자동화 경험을 쌓은 비트코인 자동매매 실험</p>
+          <span><i class="fa-brands fa-github"></i> View Repository</span>
+        </a>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p>© 2026 장민성. Built as a project-driven portfolio.</p>
+      <p>AI시대에서 진정한 성장 동력은 문제를 이해하고 개선한 과정입니다.</p>
+    </footer>
+  </div>
+
+  <div class="project-modal" id="projectModal" aria-hidden="true">
+    <div class="project-modal-panel" role="dialog" aria-modal="true" aria-labelledby="projectModalTitle">
+      <div class="project-modal-hero">
+        <div class="project-modal-top">
+          <div>
+            <div class="project-modal-kicker" id="projectModalKicker">Project Detail</div>
+            <h3 class="project-modal-title" id="projectModalTitle">Project Title</h3>
+            <p class="project-modal-summary" id="projectModalSummary">Project summary</p>
+          </div>
+          <button class="project-modal-close" type="button" id="projectModalClose" aria-label="닫기">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="project-modal-content">
+        <div class="modal-tags" id="projectModalTags"></div>
+
+        <div class="modal-section-grid">
+          <div class="modal-box">
+            <h4><i class="fa-solid fa-screwdriver-wrench"></i> 상세 기여</h4>
+            <ul id="projectModalContributions"></ul>
+          </div>
+          <div class="modal-box">
+            <h4><i class="fa-solid fa-seedling"></i> 배운 점 / 개선 포인트</h4>
+            <ul id="projectModalLearnings"></ul>
+          </div>
+        </div>
+
+        <div class="modal-box">
+          <h4><i class="fa-solid fa-images"></i> 사진 / 화면 자료</h4>
+          <div class="modal-gallery" id="projectModalGallery"></div>
+        </div>
+
+        <div class="modal-box">
+          <h4><i class="fa-solid fa-folder-open"></i> 관련 자료</h4>
+          <div class="modal-resource-list" id="projectModalResources"></div>
+        </div>
+
+        <div class="modal-link-row" id="projectModalLinks"></div>
+      </div>
+    </div>
+  </div>
+
+  <script type="application/json" id="projectData">{"sfvibe": {"kicker": "Private Company Repo · Backend", "title": "SFVibe · Local Event Platform Backend", 
+    "summary": "이미 운영 중인 복잡한 Django 프로젝트에 합류해 URL 추출, 이메일 기반 이벤트 수집, 앱스토어 기능, 인증 흐름을 개선했습니다. 레포지토리는 회사 Private 저장소라 공개하지 않습니다.", 
+    "tags": ["Django", "Celery", "Redis", "PostgreSQL", "Mailgun Webhook", "GCP Cloud Storage", "SIWE"], 
+    "contributions": ["Django 서버에서 직접 처리하던 URL 추출/이벤트 처리 흐름을 Celery 워커 기반으로 분리했습니다.", 
+    "단일 URL 처리, 다중 URL 배치 처리, 이메일 URL 수집 태스크를 역할별로 분리했습니다.", 
+    "Mailgun 웹훅을 통해 이메일 본문에서 이벤트 URL을 추출하고, 리다이렉트 추적 및 플랫폼 필터링을 적용했습니다.", 
+    "VibeCoded App Store의 좋아요, 댓글, 조회수, 미디어 업로드/갤러리 기능 개선에 참여했습니다.", 
+    "Sign-In with Ethereum 기반 인증 흐름과 Nonce 검증, 세션 관리 흐름을 개선했습니다."], 
+    "learnings": ["프로덕션 코드에서는 먼저 전체 데이터 흐름과 함수 책임을 이해해야 안정적으로 수정할 수 있다는 점을 배웠습니다.", 
+    "비동기 처리는 큐 분리, 재시도 정책, rate limiting, 로그 추적이 함께 설계되어야 한다는 점을 배웠습니다.", "팀 코드베이스에서는 개인 취향보다 기존 컨벤션과 코드 일관성이 중요하다는 점을 배웠습니다."], 
+    "images": [{"src": "assets/projects/sfvibe-01.png", "label": "SFVibe 서비스 화면"}, {"src": "assets/projects/sfvibe-02.png", "label": "Celery Worker 구조 자료"}, 
+    {"src": "assets/projects/sfvibe-03.png", "label": "Email Event Ingestion Flow"}], 
+    "resources": [{"title": "Live Site", "desc": "실제 서비스 페이지", "url": "https://sfvibe.fun/"}, 
+    {"title": "Private Repository", "desc": "회사 비공개 저장소", "url": null}, {"title": "Development Retrospective", "desc": "미국 직무체험 백엔드 개발 회고록", "url": null}], 
+    "links": [{"label": "Live Site", "icon": "fa-solid fa-up-right-from-square", "url": "https://sfvibe.fun/"}]}, 
+    "algorivew": {"kicker": "Team Project · Frontend / UX UI", "title": "AlgoReview · AI Code Review Service", 
+    "summary": "TABA 7기 팀 프로젝트로 진행한 AI 코드 리뷰 서비스입니다. 사용자는 문제 URL 또는 파일을 등록하고, 코드를 입력한 뒤 AI 기반 피드백과 개선 방향을 받을 수 있습니다.", 
+    "tags": ["React 19", "TypeScript", "Vite", "PrimeReact", "CodeMirror", "Framer Motion", "Axios"], 
+    "contributions": ["홈 화면에서 서비스 가치와 사용 흐름이 보이도록 랜딩 페이지와 섹션 전환 UI를 구성했습니다.", "리뷰 페이지에서 문제 URL/파일 입력, 코드 입력, 리뷰 요청, 결과 피드백 확인 흐름을 연결했습니다.", "CodeMirror 기반 코드 입력 영역과 리뷰 결과 하이라이트, 통과 여부 팝업 등 리뷰 중심 UI를 구현했습니다.", "리뷰 요청 API 응답을 받아 history, problem info, revision, feedback 결과가 화면에 반영되도록 처리했습니다.", "팀 프로젝트에서 FrontEnd / UX·UI 역할을 맡아 사용자가 학습 과정을 이해하기 쉬운 화면 구조를 설계했습니다."], "learnings": ["AI 서비스에서는 모델 결과 자체보다 사용자가 피드백을 이해하고 다시 개선할 수 있는 UX가 중요하다는 점을 배웠습니다.", "프론트엔드에서도 API 요청 상태, 로딩 상태, 히스토리 갱신, 결과 반영 흐름을 명확히 관리해야 한다는 점을 배웠습니다.", "팀 프로젝트에서는 화면과 API 사이의 데이터 계약을 명확히 해야 개발 속도와 안정성이 올라간다는 점을 배웠습니다."], "images": [{"src": "assets/projects/algorivew-01.png", "label": "AlgoReview 메인 화면"}, {"src": "assets/projects/algorivew-02.png", "label": "코드 리뷰 입력 화면"}, {"src": "assets/projects/algorivew-03.png", "label": "AI 피드백 결과 화면"}], "resources": [{"title": "GitHub Organization", "desc": "front, backend, deploy 저장소 모음", "url": "https://github.com/orgs/taba7-algorivew/repositories"}, {"title": "Frontend Repository", "desc": "React / TypeScript / Vite 기반 프론트엔드", "url": "https://github.com/taba7-algorivew/front"}, {"title": "Backend Repository", "desc": "AI 코드 리뷰 API 서버", "url": "https://github.com/taba7-algorivew/backend"}, {"title": "Deploy Repository", "desc": "배포 관련 저장소", "url": "https://github.com/taba7-algorivew/deploy"}], "links": [{"label": "Organization", "icon": "fa-brands fa-github", "url": "https://github.com/orgs/taba7-algorivew/repositories"}, {"label": "Front", "icon": "fa-solid fa-display", "url": "https://github.com/taba7-algorivew/front"}, {"label": "Backend", "icon": "fa-solid fa-server", "url": "https://github.com/taba7-algorivew/backend"}]}, "suman": {"kicker": "Company Website · Frontend", "title": "SUMAN Company Website", "summary": "Next.js 기반 회사 소개 사이트입니다. 회사 소개, 사업/제품, 채용, FAQ, 문의 폼 등 실제 기업 홈페이지에 필요한 페이지 구조를 설계했습니다.", "tags": ["Next.js 15", "TypeScript", "Tailwind CSS", "Zustand", "Recharts", "Framer Motion"], "contributions": ["회사 소개, 연혁, 사업/제품, 채용, 고객지원으로 이어지는 정보 구조를 설계했습니다.", "정적 빌드와 SEO를 고려해 Next.js 기반 프론트엔드 프로젝트를 구성했습니다.", "다국어 확장과 관리자 운영을 고려한 화면 구조를 설계했습니다."], "learnings": ["기업 웹사이트는 시각 디자인보다 사업 구조와 사용자의 정보 탐색 흐름이 중요하다는 점을 배웠습니다.", "SEO, 배포, 관리자 운영까지 고려해야 실제 사용할 수 있는 웹사이트가 된다는 점을 배웠습니다."], "images": [{"src": "assets/projects/suman-01.png", "label": "메인 페이지"}, {"src": "assets/projects/suman-02.png", "label": "사업 / 제품 페이지"}, {"src": "assets/projects/suman-03.png", "label": "문의 / FAQ 페이지"}], "resources": [{"title": "GitHub Repository", "desc": "SUMAN 프론트엔드 저장소", "url": "https://github.com/masterjms/suman_project_FE"}], "links": [{"label": "GitHub", "icon": "fa-brands fa-github", "url": "https://github.com/masterjms/suman_project_FE"}]}, 
+    "sorting": {"kicker": "Algorithm · Logistics", "title": "3D Sorting System Optimization Algorithm", 
+    "summary": "3D 분류기의 병목과 특성을 분석하고, 이를 기반으로 최적화 알고리즘을 개발하는 프로젝트입니다.", 
+    "tags": ["Python", "3D Packing", "Heuristic", "Scheduling", "Optimization"], "contributions": ["Limited Buffer, Shuttle/AMR 대기시간, Rack할당 정책을 고려한 MIP 전략을 설계했습니다.", 
+    "가까운 Rack우선, 랜덤, 빈 Rack 우선 휴리스틱 전략을 비교했습니다.", "현실 물류 흐름을 온라인 알고리즘 문제로 모델링했습니다."], 
+    "learnings": ["현실의 물류 문제는 단순 최적화가 아니라 온라인 입력, 안정성, 버퍼 제약을 함께 고려해야 한다는 점을 배웠습니다.", 
+    "알고리즘은 성능뿐 아니라 설명 가능성과 예외 상황 대응이 중요하다는 점을 배웠습니다."], "images": [{"src": "assets/projects/sorting-01.png", "label": "3D 적재 시각화"}, 
+    {"src": "assets/projects/sorting-02.png", "label": "알고리즘 비교 결과"}, {"src": "assets/projects/sorting-03.png", "label": "박스 입력 / 버퍼 흐름"}], 
+    "resources": [{"title": "GitHub Repository", "desc": "3D Sorting System 저장소", "url": "https://github.com/masterjms/3D_sorting_system"}], 
+    "links": [{"label": "GitHub", "icon": "fa-brands fa-github", "url": "https://github.com/masterjms/3D_sorting_system"}]}, 
+    "card": {"kicker": "Machine Learning", "title": "AI Card Segment Classification", "summary": "카드 고객 세그먼트를 예측하기 위해 XGBoost, LightGBM, CatBoost 기반의 앙상블/캐스케이드 분류 흐름을 구성한 ML 프로젝트입니다.", "tags": ["XGBoost", "LightGBM", "CatBoost", "Pandas", "Scikit-learn"], "contributions": ["클래스별 threshold를 적용한 단계별 cascade 예측 흐름을 구성했습니다.", "A/B 구간 전용 모델을 분리해 잔여 샘플을 다시 분류하는 구조를 실험했습니다.", "모델 로딩, 추론, 결과 저장까지 이어지는 inference pipeline을 작성했습니다."], "learnings": ["정확도 개선은 모델 하나보다 데이터 전처리, threshold, 클래스별 전략이 함께 작동해야 한다는 점을 배웠습니다.", "실험 코드는 재현 가능한 경로, 환경, 저장 구조까지 정리해야 유지보수가 가능하다는 점을 배웠습니다."], 
+    "images": [{"src": "assets/projects/card-01.png", "label": "모델 추론 흐름"}, {"src": "assets/projects/card-02.png", "label": "세그먼트 분포"}, 
+    {"src": "assets/projects/card-03.png", "label": "캐스케이드 전략"}], "resources": [{"title": "GitHub Repository", "desc": "AI Card Segment 저장소", 
+    "url": "https://github.com/masterjms/AI_card_segment"}], "links": [{"label": "GitHub", "icon": "fa-brands fa-github", 
+    "url": "https://github.com/masterjms/AI_card_segment"}]}, "factory": {"kicker": "Smart Factory · Edge", "title": "Smart Factory Edge Simulator", 
+    "summary": "사출기 내부 상태와 공정 변수를 흉내 내고, 외부에서 읽을 수 있는 태그 레지스트리를 제공하는 스마트팩토리 L1 시뮬레이터입니다.", 
+    "tags": ["Python", "Factory Simulation", "Tag Registry", "Edge Computing"], "contributions": ["IDLE, READY, RUN, STOP/ALARM 상태 전이를 갖는 설비 상태 모델을 구현했습니다.", 
+    "샷 카운트, 양품/불량 카운트, 온도/압력/사이클타임 등 핵심 공정 변수를 생성했습니다.", "마이크로 엣지가 읽을 수 있는 태그 소스 구조의 기반을 설계했습니다."], 
+    "learnings": ["제조 데이터 시스템은 센서값 생성보다 상태 모델과 태그 네이밍 체계가 먼저 잡혀야 한다는 점을 배웠습니다.", 
+    "엣지/게이트웨이 구조를 실험하려면 실제 장비 없이도 재현 가능한 시뮬레이터가 필요하다는 점을 배웠습니다."], 
+    "images": [{"src": "assets/projects/factory-01.png", "label": "설비 상태 전이"}, {"src": "assets/projects/factory-02.png", 
+    "label": "태그 레지스트리"}, {"src": "assets/projects/factory-03.png", "label": "공정 변수 로그"}], "resources": [{"title": "GitHub Repository", "desc": "Smart Factory Edge Simulator 저장소", "url": "https://github.com/masterjms/smart-factory-edge-simulator"}], "links": [{"label": "GitHub", "icon": "fa-brands fa-github", "url": "https://github.com/masterjms/smart-factory-edge-simulator"}]}, "radio": {"kicker": "IoT · Backend Experiment", "title": "IoT Radio Server", "summary": "IoT 라디오/방송 장비 제어를 위한 서버 실험 프로젝트입니다. Python 비동기 서버와 인증 구조를 기반으로 설계했습니다.", "tags": ["Python", "aiohttp", "JWT", "bcrypt", "IoT Backend"], "contributions": ["장비와 서버 사이의 제어/인증 흐름을 고려한 백엔드 구조를 실험했습니다.", "비동기 HTTP/WebSocket 기반 확장을 염두에 둔 Python 서버 스택을 선정했습니다."], "learnings": ["IoT 서버는 단순 API보다 연결 안정성, 인증, 네트워크 환경 변화 대응이 중요하다는 점을 배웠습니다.", "초기 실험 단계에서도 나중에 장비가 붙을 통신 흐름을 먼저 설계해야 한다는 점을 배웠습니다."], "images": [{"src": "assets/projects/radio-01.png", "label": "서버 구조 다이어그램"}, {"src": "assets/projects/radio-02.png", "label": "인증 흐름"}, {"src": "assets/projects/radio-03.png", "label": "IoT 통신 흐름"}], "resources": [{"title": "GitHub Repository", "desc": "IoT Radio Server 저장소", "url": "https://github.com/masterjms/IoT_radio_server"}], "links": [{"label": "GitHub", "icon": "fa-brands fa-github", "url": "https://github.com/masterjms/IoT_radio_server"}]}}</script>
+  <script>
+
+    const projectDetails = JSON.parse(document.getElementById("projectData").textContent);
+    const modal = document.getElementById("projectModal");
+    const modalPanel = modal.querySelector(".project-modal-panel");
+    const modalKicker = document.getElementById("projectModalKicker");
+    const modalTitle = document.getElementById("projectModalTitle");
+    const modalSummary = document.getElementById("projectModalSummary");
+    const modalTags = document.getElementById("projectModalTags");
+    const modalContributions = document.getElementById("projectModalContributions");
+    const modalLearnings = document.getElementById("projectModalLearnings");
+    const modalGallery = document.getElementById("projectModalGallery");
+    const modalResources = document.getElementById("projectModalResources");
+    const modalLinks = document.getElementById("projectModalLinks");
+    const modalClose = document.getElementById("projectModalClose");
+    let lastFocusedElement = null;
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function openProjectModal(projectKey) {
+      const data = projectDetails[projectKey];
+      if (!data) return;
+
+      lastFocusedElement = document.activeElement;
+
+      modalKicker.textContent = data.kicker;
+      modalTitle.textContent = data.title;
+      modalSummary.textContent = data.summary;
+
+      modalTags.innerHTML = data.tags
+        .map(tag => `<span class="modal-tag">${escapeHtml(tag)}</span>`)
+        .join("");
+
+      modalContributions.innerHTML = data.contributions
+        .map(item => `<li>${escapeHtml(item)}</li>`)
+        .join("");
+
+      modalLearnings.innerHTML = data.learnings
+        .map(item => `<li>${escapeHtml(item)}</li>`)
+        .join("");
+
+      modalGallery.innerHTML = data.images
+        .map(image => `
+          <div class="modal-shot is-missing">
+            <img src="${escapeHtml(image.src)}" alt="${escapeHtml(image.label)}" onload="this.parentElement.classList.remove('is-missing')" onerror="this.remove()" />
+            <div class="modal-shot-placeholder">
+              ${escapeHtml(image.label)}
+              <small>${escapeHtml(image.src)}</small>
+            </div>
+          </div>
+        `)
+        .join("");
+
+      modalResources.innerHTML = data.resources
+        .map(resource => {
+          if (resource.url) {
+            return `
+              <a class="modal-resource" href="${escapeHtml(resource.url)}" target="_blank" rel="noreferrer">
+                <div>
+                  ${escapeHtml(resource.title)}<br>
+                  <span>${escapeHtml(resource.desc)}</span>
+                </div>
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+              </a>
+            `;
+          }
+
+          return `
+            <div class="modal-resource">
+              <div>
+                ${escapeHtml(resource.title)}<br>
+                <span>${escapeHtml(resource.desc)}</span>
+              </div>
+              <i class="fa-solid fa-lock"></i>
+            </div>
+          `;
+        })
+        .join("");
+
+      modalLinks.innerHTML = data.links
+        .map(link => `
+          <a class="project-link" href="${escapeHtml(link.url)}" target="_blank" rel="noreferrer">
+            <i class="${escapeHtml(link.icon)}"></i> ${escapeHtml(link.label)}
+          </a>
+        `)
+        .join("");
+
+      modal.classList.add("is-open");
+      modal.setAttribute("aria-hidden", "false");
+      document.body.classList.add("modal-open");
+      modal.scrollTop = 0;
+      modalPanel.scrollTop = 0;
+      modalClose.focus();
+    }
+
+    function closeProjectModal() {
+      modal.classList.remove("is-open");
+      modal.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("modal-open");
+
+      if (lastFocusedElement && typeof lastFocusedElement.focus === "function") {
+        lastFocusedElement.focus();
+      }
+    }
+
+    document.querySelectorAll("[data-project]").forEach(card => {
+      card.addEventListener("click", event => {
+        if (event.target.closest("a, button")) return;
+        openProjectModal(card.getAttribute("data-project"));
+      });
+
+      card.addEventListener("keydown", event => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          openProjectModal(card.getAttribute("data-project"));
+        }
+      });
+    });
+
+    document.querySelectorAll("[data-open-project]").forEach(button => {
+      button.addEventListener("click", event => {
+        event.stopPropagation();
+        openProjectModal(button.getAttribute("data-open-project"));
+      });
+    });
+
+    modalClose.addEventListener("click", closeProjectModal);
+
+    modal.addEventListener("click", event => {
+      if (event.target === modal) closeProjectModal();
+    });
+
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape" && modal.classList.contains("is-open")) {
+        closeProjectModal();
+      }
+    });
+
+  </script>
 </body>
 </html>
