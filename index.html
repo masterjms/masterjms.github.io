@@ -728,6 +728,8 @@
 
     .modal-shot {
       position: relative;
+      padding: 0;
+      width: 100%;
       min-height: 150px;
       overflow: hidden;
       border-radius: 18px;
@@ -735,6 +737,26 @@
         linear-gradient(135deg, rgba(15, 23, 42, 0.08), rgba(59, 130, 246, 0.14)),
         #e2e8f0;
       border: 1px solid #cbd5e1;
+      cursor: zoom-in;
+      color: inherit;
+      font: inherit;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .modal-shot:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.16);
+    }
+
+    .modal-shot:focus-visible {
+      outline: 3px solid #38bdf8;
+      outline-offset: 3px;
+    }
+
+    .modal-shot:disabled {
+      cursor: default;
+      transform: none;
+      box-shadow: none;
     }
 
     .modal-shot img {
@@ -767,6 +789,70 @@
     }
 
     .modal-shot:not(.is-missing) .modal-shot-placeholder { display: none; }
+
+    /* ===== Image Lightbox ===== */
+    .image-lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(2, 6, 23, 0.94);
+      backdrop-filter: blur(10px);
+    }
+
+    .image-lightbox.is-open { display: flex; }
+
+    .image-lightbox-figure {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      max-width: min(1400px, 100%);
+      max-height: 100%;
+      margin: 0;
+    }
+
+    .image-lightbox-img {
+      display: block;
+      max-width: 100%;
+      max-height: calc(100vh - 100px);
+      object-fit: contain;
+      border-radius: 12px;
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
+    }
+
+    .image-lightbox-caption {
+      color: rgba(255, 255, 255, 0.88);
+      font-size: 0.94rem;
+      text-align: center;
+    }
+
+    .image-lightbox-close {
+      position: fixed;
+      top: 18px;
+      right: 18px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      border-radius: 999px;
+      color: #fff;
+      background: rgba(255, 255, 255, 0.12);
+      cursor: pointer;
+      font-size: 1.15rem;
+    }
+
+    .image-lightbox-close:hover { background: rgba(255, 255, 255, 0.22); }
+
+    .image-lightbox-close:focus-visible {
+      outline: 3px solid #38bdf8;
+      outline-offset: 3px;
+    }
 
     .modal-resource-list {
       display: grid;
@@ -950,8 +1036,8 @@
             </div>
           </div>
           <div class="project-body">
-            <h3>프로덕션 환경에서 동기 처리 병목을 Celery 기반 비동기 구조로 전환</h3>
-            <p class="project-summary">이미 운영 중인 복잡한 Django 프로젝트에 합류해 URL 추출, 이메일 기반 이벤트 수집, 앱스토어 기능, 인증 흐름을 개선했습니다. 레포지토리는 회사 Private 저장소라 공개하지 않습니다.</p>
+            <h3>동기식 이벤트 처리 병목을 Redis·Celery 기반 비동기 파이프라인으로 전환</h3>
+            <p class="project-summary">운영 중인 Django 서비스에서 URL 수집부터 파싱·AI 처리·DB 저장까지 하나의 요청에서 처리하던 구조를, Redis와 Celery를 활용한 비동기 처리 구조로 분리해 응답 지연과 서버 부하를 개선했습니다.</p>
             <div class="tags"><span class="tag">Django</span>
 <span class="tag">Celery</span>
 <span class="tag">Redis</span>
@@ -962,13 +1048,14 @@
             <div class="detail-block">
               <div>
                 <strong><i class="fa-solid fa-screwdriver-wrench"></i> 기여한 점</strong>
-                <ul><li>Django 서버에서 직접 처리하던 URL 추출/이벤트 처리 흐름을 Celery 워커 기반으로 분리</li>
-<li>단일 URL, 다중 URL 배치, 이메일 URL 수집 태스크를 역할별로 나누고 큐를 목적별로 분리</li>
-<li>Mailgun 웹훅, HTML 파싱, 리다이렉트 추적, 플랫폼 필터링을 통한 이메일 기반 이벤트 자동 수집 구현</li></ul>
+                <ul><li>Django 요청 안에서 직접 수행하던 URL 파싱·이벤트 추출·AI 처리·DB 저장 흐름을 Redis Queue와 Celery Worker 기반 비동기 구조로 분리</li>
+<li>Django는 작업 접수와 Queue 등록에 집중하고, 실제 이벤트 처리는 Worker가 수행하도록 Producer–Broker–Consumer 구조로 책임 분리</li>
+<li>순간적으로 다수의 URL이 유입되더라도 Django 서버가 모든 작업을 동시에 처리하지 않도록 Redis Queue를 트래픽 버퍼 및 Load Leveling 계층으로 활용</li>
+<li>단일 URL 처리, 다중 URL 배치, 이메일 기반 URL 수집을 독립적인 Celery Task로 분리하고 작업 성격에 따라 Queue를 구성</li></ul>
               </div>
               <div>
                 <strong><i class="fa-solid fa-seedling"></i> 배운 점</strong>
-                <ul><li>규모 있는 프로덕션 코드에서는 AI보다 먼저 사람이 데이터 흐름과 함수 책임을 이해해야 한다는 점</li>
+                <ul><li>성능 문제는 단순히 서버 사양이나 개별 함수 최적화만으로 해결되는 것이 아니라, 요청과 무거운 작업이 어디에서 결합되어 있는지 데이터 흐름을 먼저 파악하는 것이 중요하다는 점</li>
 <li>비동기 처리 설계에서는 태스크 책임 분리, 재시도 정책, rate limiting, 큐 분리가 중요하다는 점</li></ul>
               </div>
             </div>
@@ -980,7 +1067,50 @@
           </div>
         </article>
 
-        <article class="project featured" data-project="algorivew" tabindex="0">
+        <article class="project featured" data-project="digitaltwin" tabindex="0">
+          <div class="project-visual dark">
+            <span class="project-label">Private Company Repo · Full-Stack</span>
+            <i class="project-icon fa-solid fa-gears"></i>
+            <div>
+              <h3>석탄 미분기 디지털 트윈 · Coal Pulverizer Digital Twin</h3>
+              <p>발전소 롤타이어 예지보전을 위한 산업용 디지털 트윈 대시보드</p>
+            </div>
+          </div>
+          <div class="project-body">
+            <h3>단일 app.py 백엔드를 계층형 구조로 재설계하고 다중 설비 모니터링으로 확장</h3>
+            <p class="project-summary">협력사(NEXTRO)가 한국중부발전(KOMIPO) 보령화력 3호기 설비의 롤타이어 예지보전을 위해 만든 산업용 디지털 트윈입니다. 코드를 직접 추적해보니 Unity WebGL 3D 뷰어는 SendMessage로 미리 계산된 값을 받아 색만 칠하는 수동적인 렌더러였고, 실제 판단은 TimescaleDB 센서 데이터를 Archard 마모법칙과 PINN으로 처리해 잔여수명(RUL)을 예측하는 백엔드에 있었습니다. 5인이 참여한 팀 프로젝트에서 핵심 물리 모델은 다른 개발자가 전담했고, 저는 백엔드 아키텍처 리팩터링과 Unity 연동 파이프라인, 운영자용 화면의 신뢰도 표시를 맡았습니다.</p>
+            <div class="tags"><span class="tag">Python</span>
+<span class="tag">FastAPI</span>
+<span class="tag">TimescaleDB</span>
+<span class="tag">Unity WebGL</span>
+<span class="tag">PyTorch (PINN)</span>
+<span class="tag">Archard Wear Model</span>
+<span class="tag">Docker</span></div>
+            <div class="detail-block">
+              <div>
+                <strong><i class="fa-solid fa-screwdriver-wrench"></i> 기여한 점</strong>
+                <ul><li>단일 app.py 908줄을 라우터·서비스·스키마 계층으로 분리해 유지보수 가능한 백엔드 구조로 리팩터링(7단계, 회귀 방지 스모크 테스트 선행)</li>
+<li>"Unity가 직접 API를 호출한다"는 전제로 짜여있던 협력사 스크립트와 실제 구조(브라우저 JS가 호출하고 결과만 SendMessage로 전달)가 반대임을 확인하고 PINN 연동 파이프라인을 재구현, Origin 헤더 관련 403 버그를 대조실험으로 재현·리포트</li>
+<li>미분기 1대만 표시하던 화면을 6대(A~F) 동시 모니터링 대시보드로 확장, Three.js로 롤타이어 3D 모델을 절차적으로 생성</li>
+<li>화면 세 군데에서 다르게 표시되던 "손상도" 수치의 원인을 코드 레벨로 추적해 집계 방식 차이를 규명</li>
+<li>"손상도 76%, 잔여수명 111일" 같은 운영자용 숫자의 신뢰 근거(마모 시작 기준일, 실제 가동시간)를 화면에 병기하는 기능 설계·구현</li></ul>
+              </div>
+              <div>
+                <strong><i class="fa-solid fa-seedling"></i> 배운 점</strong>
+                <ul><li>레거시 코드는 기능부터 추가하기보다, 회귀 테스트로 안전망을 먼저 확보한 뒤 구조를 바꿔야 한다는 점</li>
+<li>물리 기반 모델과 신경망 기반 모델이 공존하는 시스템은 신뢰 범위와 실패 조건을 UI에 반영해야 하고, 공식이 맞아도 입력 데이터가 오래되면(3개월 정체된 센서값을 실제로 발견) 결과는 틀릴 수 있다는 점</li>
+<li>운영자용 숫자가 완결된 답처럼 보여도 그 신뢰도를 판단할 근거는 기술자 레벨 정보에 숨어 있을 수 있어, 다 보여주지도 다 숨기지도 않는 최소한의 신호 설계가 필요하다는 점</li>
+<li>Unity를 수동 렌더러로 두고 API 호출 주체를 브라우저 JS 한쪽에 몰아둔 구조가 구현은 편했지만, 통신 주체가 한쪽에 종속되는 게 장기적으로 최선인지는 이번 작업만으로 판단하기 어려웠던 점</li></ul>
+              </div>
+            </div>
+            <div class="project-links">
+              <span class="project-link secondary"><i class="fa-solid fa-lock"></i> Private Company Repo</span>
+<button class="project-link button-like secondary" type="button" data-open-project="digitaltwin"><i class="fa-solid fa-images"></i> 자세히 보기</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="project" data-project="algorivew" tabindex="0">
           <div class="project-visual purple">
             <span class="project-label">Team Project · Frontend / UX UI</span>
             <i class="project-icon fa-solid fa-code-compare"></i>
@@ -1680,46 +1810,470 @@
     </div>
   </div>
 
-  <script type="application/json" id="projectData">{"sfvibe": {"kicker": "Private Company Repo · Backend", "title": "SFVibe · Local Event Platform Backend", 
-    "summary": "이미 운영 중인 복잡한 Django 프로젝트에 합류해 URL 추출, 이메일 기반 이벤트 수집, 앱스토어 기능, 인증 흐름을 개선했습니다. 레포지토리는 회사 Private 저장소라 공개하지 않습니다.", 
-    "tags": ["Django", "Celery", "Redis", "PostgreSQL", "Mailgun Webhook", "GCP Cloud Storage", "SIWE"], 
-    "contributions": ["Django 서버에서 직접 처리하던 URL 추출/이벤트 처리 흐름을 Celery 워커 기반으로 분리했습니다.", 
-    "단일 URL 처리, 다중 URL 배치 처리, 이메일 URL 수집 태스크를 역할별로 분리했습니다.", 
-    "Mailgun 웹훅을 통해 이메일 본문에서 이벤트 URL을 추출하고, 리다이렉트 추적 및 플랫폼 필터링을 적용했습니다.", 
-    "VibeCoded App Store의 좋아요, 댓글, 조회수, 미디어 업로드/갤러리 기능 개선에 참여했습니다.", 
-    "Sign-In with Ethereum 기반 인증 흐름과 Nonce 검증, 세션 관리 흐름을 개선했습니다."], 
-    "learnings": ["프로덕션 코드에서는 먼저 전체 데이터 흐름과 함수 책임을 이해해야 안정적으로 수정할 수 있다는 점을 배웠습니다.", 
-    "비동기 처리는 큐 분리, 재시도 정책, rate limiting, 로그 추적이 함께 설계되어야 한다는 점을 배웠습니다.", "팀 코드베이스에서는 개인 취향보다 기존 컨벤션과 코드 일관성이 중요하다는 점을 배웠습니다."], 
-    "images": [{"src": "assets/projects/sfvibe-01.png", "label": "SFVibe 서비스 화면"}, {"src": "assets/projects/sfvibe-02.png", "label": "Celery Worker 구조 자료"}, 
-    {"src": "assets/projects/sfvibe-03.png", "label": "Email Event Ingestion Flow"}], 
-    "resources": [{"title": "Live Site", "desc": "실제 서비스 페이지", "url": "https://sfvibe.fun/"}, 
-    {"title": "Private Repository", "desc": "회사 비공개 저장소", "url": null}, {"title": "Development Retrospective", "desc": "미국 직무체험 백엔드 개발 회고록", "url": null}], 
-    "links": [{"label": "Live Site", "icon": "fa-solid fa-up-right-from-square", "url": "https://sfvibe.fun/"}]}, 
-    "algorivew": {"kicker": "Team Project · Frontend / UX UI", "title": "AlgoReview · AI Code Review Service", 
-    "summary": "TABA 7기 팀 프로젝트로 진행한 AI 코드 리뷰 서비스입니다. 사용자는 문제 URL 또는 파일을 등록하고, 코드를 입력한 뒤 AI 기반 피드백과 개선 방향을 받을 수 있습니다.", 
-    "tags": ["React 19", "TypeScript", "Vite", "PrimeReact", "CodeMirror", "Framer Motion", "Axios"], 
-    "contributions": ["홈 화면에서 서비스 가치와 사용 흐름이 보이도록 랜딩 페이지와 섹션 전환 UI를 구성했습니다.", "리뷰 페이지에서 문제 URL/파일 입력, 코드 입력, 리뷰 요청, 결과 피드백 확인 흐름을 연결했습니다.", "CodeMirror 기반 코드 입력 영역과 리뷰 결과 하이라이트, 통과 여부 팝업 등 리뷰 중심 UI를 구현했습니다.", "리뷰 요청 API 응답을 받아 history, problem info, revision, feedback 결과가 화면에 반영되도록 처리했습니다.", "팀 프로젝트에서 FrontEnd / UX·UI 역할을 맡아 사용자가 학습 과정을 이해하기 쉬운 화면 구조를 설계했습니다."], "learnings": ["AI 서비스에서는 모델 결과 자체보다 사용자가 피드백을 이해하고 다시 개선할 수 있는 UX가 중요하다는 점을 배웠습니다.", "프론트엔드에서도 API 요청 상태, 로딩 상태, 히스토리 갱신, 결과 반영 흐름을 명확히 관리해야 한다는 점을 배웠습니다.", "팀 프로젝트에서는 화면과 API 사이의 데이터 계약을 명확히 해야 개발 속도와 안정성이 올라간다는 점을 배웠습니다."], "images": [{"src": "assets/projects/algorivew-01.png", "label": "AlgoReview 메인 화면"}, {"src": "assets/projects/algorivew-02.png", "label": "코드 리뷰 입력 화면"}, {"src": "assets/projects/algorivew-03.png", "label": "AI 피드백 결과 화면"}], "resources": [{"title": "GitHub Organization", "desc": "front, backend, deploy 저장소 모음", "url": "https://github.com/orgs/taba7-algorivew/repositories"}, {"title": "Frontend Repository", "desc": "React / TypeScript / Vite 기반 프론트엔드", "url": "https://github.com/taba7-algorivew/front"}, {"title": "Backend Repository", "desc": "AI 코드 리뷰 API 서버", "url": "https://github.com/taba7-algorivew/backend"}, {"title": "Deploy Repository", "desc": "배포 관련 저장소", "url": "https://github.com/taba7-algorivew/deploy"}], "links": [{"label": "Organization", "icon": "fa-brands fa-github", "url": "https://github.com/orgs/taba7-algorivew/repositories"}, {"label": "Front", "icon": "fa-solid fa-display", "url": "https://github.com/taba7-algorivew/front"}, {"label": "Backend", "icon": "fa-solid fa-server", "url": "https://github.com/taba7-algorivew/backend"}]}, "suman": {"kicker": "Company Website · Frontend", "title": "SUMAN Company Website", "summary": "Next.js 기반 회사 소개 사이트입니다. 회사 소개, 사업/제품, 채용, FAQ, 문의 폼 등 실제 기업 홈페이지에 필요한 페이지 구조를 설계했습니다.", "tags": ["Next.js 15", "TypeScript", "Tailwind CSS", "Zustand", "Recharts", "Framer Motion"], "contributions": ["회사 소개, 연혁, 사업/제품, 채용, 고객지원으로 이어지는 정보 구조를 설계했습니다.", "정적 빌드와 SEO를 고려해 Next.js 기반 프론트엔드 프로젝트를 구성했습니다.", "다국어 확장과 관리자 운영을 고려한 화면 구조를 설계했습니다."], "learnings": ["기업 웹사이트는 시각 디자인보다 사업 구조와 사용자의 정보 탐색 흐름이 중요하다는 점을 배웠습니다.", "SEO, 배포, 관리자 운영까지 고려해야 실제 사용할 수 있는 웹사이트가 된다는 점을 배웠습니다."], "images": [{"src": "assets/projects/suman-01.png", "label": "메인 페이지"}, {"src": "assets/projects/suman-02.png", "label": "사업 / 제품 페이지"}, {"src": "assets/projects/suman-03.png", "label": "문의 / FAQ 페이지"}], "resources": [{"title": "GitHub Repository", "desc": "SUMAN 프론트엔드 저장소", "url": "https://github.com/masterjms/suman_project_FE"}], "links": [{"label": "GitHub", "icon": "fa-brands fa-github", "url": "https://github.com/masterjms/suman_project_FE"}]}, 
-    "sorting": {"kicker": "Algorithm · Logistics", "title": "3D Sorting System Optimization Algorithm", 
-    "summary": "3D 분류기의 병목과 특성을 분석하고, 이를 기반으로 최적화 알고리즘을 개발하는 프로젝트입니다.", 
-    "tags": ["Python", "3D Packing", "Heuristic", "Scheduling", "Optimization"], "contributions": ["Limited Buffer, Shuttle/AMR 대기시간, Rack할당 정책을 고려한 MIP 전략을 설계했습니다.", 
-    "가까운 Rack우선, 랜덤, 빈 Rack 우선 휴리스틱 전략을 비교했습니다.", "현실 물류 흐름을 온라인 알고리즘 문제로 모델링했습니다."], 
-    "learnings": ["현실의 물류 문제는 단순 최적화가 아니라 온라인 입력, 안정성, 버퍼 제약을 함께 고려해야 한다는 점을 배웠습니다.", 
-    "알고리즘은 성능뿐 아니라 설명 가능성과 예외 상황 대응이 중요하다는 점을 배웠습니다."], "images": [{"src": "assets/projects/sorting-01.png", "label": "3D 적재 시각화"}, 
-    {"src": "assets/projects/sorting-02.png", "label": "알고리즘 비교 결과"}, {"src": "assets/projects/sorting-03.png", "label": "박스 입력 / 버퍼 흐름"}], 
-    "resources": [{"title": "GitHub Repository", "desc": "3D Sorting System 저장소", "url": "https://github.com/masterjms/3D_sorting_system"}], 
-    "links": [{"label": "GitHub", "icon": "fa-brands fa-github", "url": "https://github.com/masterjms/3D_sorting_system"}]}, 
-    "card": {"kicker": "Machine Learning", "title": "AI Card Segment Classification", "summary": "카드 고객 세그먼트를 예측하기 위해 XGBoost, LightGBM, CatBoost 기반의 앙상블/캐스케이드 분류 흐름을 구성한 ML 프로젝트입니다.", "tags": ["XGBoost", "LightGBM", "CatBoost", "Pandas", "Scikit-learn"], "contributions": ["클래스별 threshold를 적용한 단계별 cascade 예측 흐름을 구성했습니다.", "A/B 구간 전용 모델을 분리해 잔여 샘플을 다시 분류하는 구조를 실험했습니다.", "모델 로딩, 추론, 결과 저장까지 이어지는 inference pipeline을 작성했습니다."], "learnings": ["정확도 개선은 모델 하나보다 데이터 전처리, threshold, 클래스별 전략이 함께 작동해야 한다는 점을 배웠습니다.", "실험 코드는 재현 가능한 경로, 환경, 저장 구조까지 정리해야 유지보수가 가능하다는 점을 배웠습니다."], 
-    "images": [{"src": "assets/projects/card-01.png", "label": "모델 추론 흐름"}, {"src": "assets/projects/card-02.png", "label": "세그먼트 분포"}, 
-    {"src": "assets/projects/card-03.png", "label": "캐스케이드 전략"}], "resources": [{"title": "GitHub Repository", "desc": "AI Card Segment 저장소", 
-    "url": "https://github.com/masterjms/AI_card_segment"}], "links": [{"label": "GitHub", "icon": "fa-brands fa-github", 
-    "url": "https://github.com/masterjms/AI_card_segment"}]}, "factory": {"kicker": "Smart Factory · Edge", "title": "Smart Factory Edge Simulator", 
-    "summary": "사출기 내부 상태와 공정 변수를 흉내 내고, 외부에서 읽을 수 있는 태그 레지스트리를 제공하는 스마트팩토리 L1 시뮬레이터입니다.", 
-    "tags": ["Python", "Factory Simulation", "Tag Registry", "Edge Computing"], "contributions": ["IDLE, READY, RUN, STOP/ALARM 상태 전이를 갖는 설비 상태 모델을 구현했습니다.", 
-    "샷 카운트, 양품/불량 카운트, 온도/압력/사이클타임 등 핵심 공정 변수를 생성했습니다.", "마이크로 엣지가 읽을 수 있는 태그 소스 구조의 기반을 설계했습니다."], 
-    "learnings": ["제조 데이터 시스템은 센서값 생성보다 상태 모델과 태그 네이밍 체계가 먼저 잡혀야 한다는 점을 배웠습니다.", 
-    "엣지/게이트웨이 구조를 실험하려면 실제 장비 없이도 재현 가능한 시뮬레이터가 필요하다는 점을 배웠습니다."], 
-    "images": [{"src": "assets/projects/factory-01.png", "label": "설비 상태 전이"}, {"src": "assets/projects/factory-02.png", 
-    "label": "태그 레지스트리"}, {"src": "assets/projects/factory-03.png", "label": "공정 변수 로그"}], "resources": [{"title": "GitHub Repository", "desc": "Smart Factory Edge Simulator 저장소", "url": "https://github.com/masterjms/smart-factory-edge-simulator"}], "links": [{"label": "GitHub", "icon": "fa-brands fa-github", "url": "https://github.com/masterjms/smart-factory-edge-simulator"}]}, "radio": {"kicker": "IoT · Backend Experiment", "title": "IoT Radio Server", "summary": "IoT 라디오/방송 장비 제어를 위한 서버 실험 프로젝트입니다. Python 비동기 서버와 인증 구조를 기반으로 설계했습니다.", "tags": ["Python", "aiohttp", "JWT", "bcrypt", "IoT Backend"], "contributions": ["장비와 서버 사이의 제어/인증 흐름을 고려한 백엔드 구조를 실험했습니다.", "비동기 HTTP/WebSocket 기반 확장을 염두에 둔 Python 서버 스택을 선정했습니다."], "learnings": ["IoT 서버는 단순 API보다 연결 안정성, 인증, 네트워크 환경 변화 대응이 중요하다는 점을 배웠습니다.", "초기 실험 단계에서도 나중에 장비가 붙을 통신 흐름을 먼저 설계해야 한다는 점을 배웠습니다."], "images": [{"src": "assets/projects/radio-01.png", "label": "서버 구조 다이어그램"}, {"src": "assets/projects/radio-02.png", "label": "인증 흐름"}, {"src": "assets/projects/radio-03.png", "label": "IoT 통신 흐름"}], "resources": [{"title": "GitHub Repository", "desc": "IoT Radio Server 저장소", "url": "https://github.com/masterjms/IoT_radio_server"}], "links": [{"label": "GitHub", "icon": "fa-brands fa-github", "url": "https://github.com/masterjms/IoT_radio_server"}]}}</script>
+  <div class="image-lightbox" id="imageLightbox" aria-hidden="true">
+    <button class="image-lightbox-close" type="button" id="imageLightboxClose" aria-label="확대 이미지 닫기">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+    <figure class="image-lightbox-figure" role="dialog" aria-modal="true" aria-labelledby="imageLightboxCaption">
+      <img class="image-lightbox-img" id="imageLightboxImg" src="" alt="" />
+      <figcaption class="image-lightbox-caption" id="imageLightboxCaption"></figcaption>
+    </figure>
+  </div>
+
+  <script type="application/json" id="projectData">
+{
+  "sfvibe": {
+    "kicker": "Private Company Repo · Backend",
+    "title": "SFVibe · Local Event Platform Backend",
+    "summary": "운영 중인 Django 서비스에서 URL 수집부터 외부 페이지 파싱, 이벤트 정보 추출, AI 기반 데이터 가공, DB 저장까지 하나의 요청 흐름에서 처리하던 구조를 개선했습니다. 이벤트 수집량이 증가하면서 외부 네트워크 요청과 AI 처리 시간이 Django 요청 처리와 직접 결합되어 응답 지연과 서버 자원 경쟁이 발생할 수 있는 구조였고, 이를 Redis를 Message Broker로 사용하는 Celery 기반 비동기 처리 구조로 분리했습니다.",
+    "tags": [
+      "Django",
+      "Celery",
+      "Redis",
+      "PostgreSQL",
+      "Mailgun Webhook",
+      "GCP Cloud Storage",
+      "SIWE"
+    ],
+    "contributions": [
+      "기존 구조에서는 하나의 URL을 처리하기 위해 외부 사이트 접근, HTML 파싱, 이벤트 정보 추출, AI 처리, DB 저장이 모두 완료될 때까지 Django 요청이 유지되었습니다. 이 구조는 URL 수집량이 증가할수록 요청 처리 시간이 길어지고, 웹 요청 처리와 스크래핑·AI 작업이 동일 서버 자원을 경쟁한다는 문제가 있었습니다. 특히 이메일이나 배치 입력을 통해 여러 URL이 동시에 유입될 경우 순간적인 작업량 증가를 흡수할 계층이 없었습니다.",
+      "Redis를 작업 Queue로 두면서 “요청을 받는 속도”와 “실제로 이벤트를 처리하는 속도”를 분리​했습니다. Django는 작업을 Queue에 등록한 뒤 빠르게 요청 처리를 종료하고, Celery Worker가 Queue에 쌓인 작업을 자신의 처리 가능한 속도로 소비하도록 변경했습니다.",
+      "특정 외부 플랫폼이나 AI 처리 단계가 느려지더라도 API 요청 처리 전체가 함께 지연되는 구조를 완화하고, 병목이 발생하는 Worker만 별도로 확장되어 서버가 다운되는 상황을 해결했습니다.",
+      "VibeCoded App Store의 좋아요, 댓글, 조회수, 미디어 업로드/갤러리 기능 개선에 참여했습니다.",
+      "Sign-In with Ethereum 기반 인증 흐름과 Nonce 검증, 세션 관리 흐름을 개선했습니다."
+    ],
+    "learnings": [
+      "프로덕션 코드에서는 먼저 전체 데이터 흐름과 함수 책임을 이해해야 안정적으로 수정할 수 있다는 점을 배웠습니다.",
+      "비동기 처리는 큐 분리, 재시도 정책, rate limiting, 로그 추적이 함께 설계되어야 한다는 점을 배웠습니다.",
+      "팀 코드베이스에서는 개인 취향보다 기존 컨벤션과 코드 일관성이 중요하다는 점을 배웠습니다.",
+      "Queue 기반 구조에서는 특정 작업이 느려졌을 때 전체 서버가 함께 느려지는 대신 해당 작업의 적체로 문제를 격리할 수 있다는 점을 배웠습니다.",
+      "Redis + Celery 기반 비동기 구조로 전환해 서버 병목을 완화했지만, 당시 TPS·p95/p99 latency·에러율·SLO 같은 성능 지표를 사전에 정의하고 수집하지 않아 개선 효과를 정량적으로 검증하지 못한 점이 아쉬움으로 남았습니다. 이후에는 구조 개선과 함께 핵심 KPI와 SLO를 먼저 설정하고, 변경 전후 성능을 비교할 수 있는 모니터링 체계를 함께 설계해야 한다는 점을 배웠습니다."
+    ],
+    "images": [
+      {
+        "src": "assets/sfvibe-01.png",
+        "label": "SFVibe 서비스 화면"
+      },
+      {
+        "src": "assets/sfvibe-02.png",
+        "label": "Celery Worker 구조 자료"
+      },
+      {
+        "src": "assets/sfvibe-03.jpg",
+        "label": "django-admin 기반 이벤트 관리 화면"
+      }
+    ],
+    "resources": [
+      {
+        "title": "Live Site",
+        "desc": "실제 서비스 페이지",
+        "url": "https://sfvibe.fun/"
+      },
+      {
+        "title": "Private Repository",
+        "desc": "회사 비공개 저장소",
+        "url": null
+      },
+      {
+        "title": "Development Retrospective",
+        "desc": "미국 직무체험 백엔드 개발 회고록",
+        "url": null
+      }
+    ],
+    "links": [
+      {
+        "label": "Live Site",
+        "icon": "fa-solid fa-up-right-from-square",
+        "url": "https://sfvibe.fun/"
+      }
+    ]
+  },
+  "digitaltwin": {
+    "kicker": "Private Company Repo · Full-Stack",
+    "title": "석탄 미분기 디지털 트윈 · Coal Pulverizer Digital Twin",
+    "summary": "협력사(NEXTRO)가 한국중부발전(KOMIPO) 보령화력 3호기 설비의 롤타이어 예지보전을 위해 만든 산업용 디지털 트윈입니다. 코드를 직접 추적해보니 Unity WebGL 3D 뷰어는 SendMessage로 미리 계산된 값을 받아 색만 칠하는 수동적인 렌더러였고, 실제 '쌍둥이'로서의 판단은 TimescaleDB 센서 데이터를 Archard 마모법칙과 PINN(Physics-Informed Neural Network)으로 처리해 잔여수명(RUL)을 예측하는 백엔드에 있었습니다. 5인이 참여한 팀 프로젝트로 핵심 물리 모델은 다른 개발자가 전담했고, 저는 백엔드 아키텍처 리팩터링과 Unity 연동 파이프라인, 운영자용 화면의 신뢰도 표시를 맡았습니다.",
+    "tags": [
+      "Python",
+      "FastAPI",
+      "TimescaleDB",
+      "Unity WebGL",
+      "PyTorch (PINN)",
+      "Archard Wear Model",
+      "Docker"
+    ],
+    "contributions": [
+      "단일 app.py 파일 하나에 라우트, 설정, 스키마가 뒤섞여 있던 백엔드를 7단계에 걸쳐 리팩터링했습니다. DB 자격증명이 10개 파일에 하드코딩돼 있던 것을 config.py로 중앙화하고, Pydantic 스키마 13개를 schemas/ 패키지로 분리했으며, app.py에서 908줄을 들어내 도메인별 라우터 5개(digital_twin/sensors/simulator/agent/unity)로 재구성했습니다. 매 단계 진행 전 회귀 방지 스모크 테스트를 먼저 추가해 기존 동작이 깨지지 않는지 검증하면서 순차적으로 진행했습니다.",
+      "팀원이 전달한 Unity C# 스크립트(PinnWearApiClient.cs)는 'Unity가 직접 백엔드 API를 호출한다'는 전제로 짜여 있었지만, 실제 저장소 구조(unity_webgl/index.html)를 추적해보니 정반대였습니다 — 모든 API 호출은 브라우저 JS가 담당하고 결과만 SendMessage로 Unity에 전달하는 구조였습니다. 스크립트가 하려던 일(세션 토큰 발급 → PINN 추론 요청 → 결과 반영)을 JS 파이프라인으로 재구현했고, 이 과정에서 세션 토큰 발급이 브라우저에서 항상 403이 나는 원인을 curl 대조실험(Origin 헤더 유무별 요청/응답 비교)으로 추적했습니다. 브라우저가 same-origin GET 요청에는 Origin 헤더를 붙이지 않는다는 사실을 서버 인증 코드가 고려하지 않은 설계 결함임을 확인하고, 재현 절차·원인·수정안을 정리해 담당자에게 전달했습니다.",
+      "미분기 1대(B)만 보여주던 화면을 6대(A~F) 동시 모니터링 대시보드로 확장했습니다. 각 설비마다 Three.js로 롤타이어 3D 모델을 절차적으로 생성하고(Unity 원본의 회전축·각도 좌표계를 그대로 재현), 가동/정지 상태에 따라 타이어 색상과 회전 애니메이션이 실시간으로 바뀌도록 구현했습니다. 동료가 동시에 push한 대형 커밋과 로컬 변경사항을 git stash와 수동 hunk 재적용으로 데이터 손실 없이 병합했습니다.",
+      "화면 세 군데(엔지니어링 도면 탭 / 경보 배너 / 상세 메트릭)에 표시되는 '손상도' 수치가 서로 다르게 나오는 문제를 코드 레벨로 추적했습니다. 같은 실측 데이터를 개별 롤러의 zone별 최댓값, 3개 롤러 평균의 zone별 최댓값, 물리 시뮬레이션 기반 damage_fraction이라는 세 가지 다른 방식으로 집계하고 있었던 것이 원인임을 규명했습니다.",
+      "3D 트윈 화면이 보여주는 '손상도 76%, 잔여수명 111일' 같은 운영자용 결론이 실제로는 마모 시작 기준일(정비이력 등록 여부)과 마지막 센서 수신 시각에 따라 달라진다는 걸 코드로 역추적했습니다. 화면을 기술자용으로 복잡하게 만들지 않으면서도 '이 숫자를 얼마나 믿어도 되는가'를 운영자가 최소한으로 판단할 수 있도록, 마모 시작 기준일과 실제 가동시간을 함께 표시하는 기능을 설계·구현했습니다."
+    ],
+    "learnings": [
+      "레거시 코드는 기능을 먼저 추가하기보다, 회귀 테스트로 안전망을 확보한 뒤 구조를 바꿔야 안전하다는 점을 배웠습니다.",
+      "물리 기반 모델(Archard)과 신경망 기반 모델(PINN)이 공존하는 시스템에서는 검증 자체에도 층위가 있다는 걸 배웠습니다. 공식이 문헌과 형태가 같은지 대조하는 것, '설비가 멈추면 마모율은 0이어야 한다' 같은 극한 상황 sanity check, 그리고 PINN이 학습 당시 물리 조건과 정확히 일치하지 않으면 외삽 대신 503으로 응답을 거부하는 걸 처음엔 버그로 오해했다가 '모를 때 자신 있는 척 답하지 않는' 의도된 안전장치였다는 걸 재인식한 것까지, 검증은 공식 하나가 아니라 여러 층을 함께 봐야 한다는 점을 배웠습니다.",
+      "공식과 모델이 맞아도 입력 데이터가 오래되면 결과는 틀린다는 걸 실제 사례로 확인했습니다. 최신 센서 데이터가 실제 '오늘'보다 3개월 전에 멈춰 있었는데도 화면은 경고 없이 '76%, 111일 남음'이라는 정밀해 보이는 숫자를 보여주고 있었고, 이후로는 데이터의 신선도 자체를 신뢰도 검증의 일부로 다뤄야 한다고 생각하게 됐습니다.",
+      "운영자 레벨 숫자가 겉보기엔 완결된 답처럼 보여도, 그 신뢰도를 판단할 근거는 기술자 레벨 정보 안에 숨어 있을 수 있다는 걸 배웠습니다. 정보를 다 보여주는 것도, 다 숨기는 것도 답이 아니라서 최소한의 신호 하나를 얹는 절충이 필요했습니다.",
+      "같은 화면에 유사한 지표가 여러 방식으로 노출될 때는 계산 방식의 차이를 명시하지 않으면 사용자가 데이터를 오해할 수 있다는 점을 배웠습니다.",
+      "가장 판단이 어려웠던 지점은 Unity와의 통신 구조였습니다. 모든 API 호출 주체를 브라우저 JS 한쪽에 몰아두고 Unity는 SendMessage로 결과만 받는 수동적 렌더러로 남긴 구조가 결과적으로는 구현하기 쉬웠지만, 통신 주체가 한쪽에 종속되는 이 설계가 장기적으로도 최선인지는 이번 작업만으로 판단하기 어려웠습니다. Unity가 직접 API를 호출하는 구조였다면 3D 클라이언트를 더 독립적으로 다루기 쉬웠을 수도 있다는 생각이 남아, 다음에는 이 트레이드오프를 더 명확히 검토해보고 싶습니다."
+    ],
+    "images": [
+      {
+        "src": "assets/projects/digitaltwin-01.png",
+        "label": "미분기 A-F 현황판"
+      },
+      {
+        "src": "assets/projects/digitaltwin-02.png",
+        "label": "Unity WebGL 3D 뷰어"
+      },
+      {
+        "src": "assets/projects/digitaltwin-03.png",
+        "label": "엔지니어링 도면 / 마모도 히트맵"
+      }
+    ],
+    "resources": [
+      {
+        "title": "Private Repository",
+        "desc": "협력사 비공개 저장소",
+        "url": null
+      },
+      {
+        "title": "Backend Refactor",
+        "desc": "app.py 단일 파일 → 라우터/서비스/스키마 계층 분리 (7단계)",
+        "url": null
+      },
+      {
+        "title": "PINN Prediction UI",
+        "desc": "세션 토큰 발급 → PINN 추론 호출 프론트엔드 연동",
+        "url": null
+      }
+    ],
+    "links": []
+  },
+  "algorivew": {
+    "kicker": "Team Project · Frontend / UX UI",
+    "title": "AlgoReview · AI Code Review Service",
+    "summary": "TABA 7기 팀 프로젝트로 진행한 AI 코드 리뷰 서비스입니다. 사용자는 문제 URL 또는 파일을 등록하고, 코드를 입력한 뒤 AI 기반 피드백과 개선 방향을 받을 수 있습니다.",
+    "tags": [
+      "React 19",
+      "TypeScript",
+      "Vite",
+      "PrimeReact",
+      "CodeMirror",
+      "Framer Motion",
+      "Axios"
+    ],
+    "contributions": [
+      "홈 화면에서 서비스 가치와 사용 흐름이 보이도록 랜딩 페이지와 섹션 전환 UI를 구성했습니다.",
+      "리뷰 페이지에서 문제 URL/파일 입력, 코드 입력, 리뷰 요청, 결과 피드백 확인 흐름을 연결했습니다.",
+      "CodeMirror 기반 코드 입력 영역과 리뷰 결과 하이라이트, 통과 여부 팝업 등 리뷰 중심 UI를 구현했습니다.",
+      "리뷰 요청 API 응답을 받아 history, problem info, revision, feedback 결과가 화면에 반영되도록 처리했습니다.",
+      "팀 프로젝트에서 FrontEnd / UX·UI 역할을 맡아 사용자가 학습 과정을 이해하기 쉬운 화면 구조를 설계했습니다."
+    ],
+    "learnings": [
+      "AI 서비스에서는 모델 결과 자체보다 사용자가 피드백을 이해하고 다시 개선할 수 있는 UX가 중요하다는 점을 배웠습니다.",
+      "프론트엔드에서도 API 요청 상태, 로딩 상태, 히스토리 갱신, 결과 반영 흐름을 명확히 관리해야 한다는 점을 배웠습니다.",
+      "팀 프로젝트에서는 화면과 API 사이의 데이터 계약을 명확히 해야 개발 속도와 안정성이 올라간다는 점을 배웠습니다."
+    ],
+    "images": [
+      {
+        "src": "assets/projects/algorivew-01.png",
+        "label": "AlgoReview 메인 화면"
+      },
+      {
+        "src": "assets/projects/algorivew-02.png",
+        "label": "코드 리뷰 입력 화면"
+      },
+      {
+        "src": "assets/projects/algorivew-03.png",
+        "label": "AI 피드백 결과 화면"
+      }
+    ],
+    "resources": [
+      {
+        "title": "GitHub Organization",
+        "desc": "front, backend, deploy 저장소 모음",
+        "url": "https://github.com/orgs/taba7-algorivew/repositories"
+      },
+      {
+        "title": "Frontend Repository",
+        "desc": "React / TypeScript / Vite 기반 프론트엔드",
+        "url": "https://github.com/taba7-algorivew/front"
+      },
+      {
+        "title": "Backend Repository",
+        "desc": "AI 코드 리뷰 API 서버",
+        "url": "https://github.com/taba7-algorivew/backend"
+      },
+      {
+        "title": "Deploy Repository",
+        "desc": "배포 관련 저장소",
+        "url": "https://github.com/taba7-algorivew/deploy"
+      }
+    ],
+    "links": [
+      {
+        "label": "Organization",
+        "icon": "fa-brands fa-github",
+        "url": "https://github.com/orgs/taba7-algorivew/repositories"
+      },
+      {
+        "label": "Front",
+        "icon": "fa-solid fa-display",
+        "url": "https://github.com/taba7-algorivew/front"
+      },
+      {
+        "label": "Backend",
+        "icon": "fa-solid fa-server",
+        "url": "https://github.com/taba7-algorivew/backend"
+      }
+    ]
+  },
+  "suman": {
+    "kicker": "Company Website · Frontend",
+    "title": "SUMAN Company Website",
+    "summary": "Next.js 기반 회사 소개 사이트입니다. 회사 소개, 사업/제품, 채용, FAQ, 문의 폼 등 실제 기업 홈페이지에 필요한 페이지 구조를 설계했습니다.",
+    "tags": [
+      "Next.js 15",
+      "TypeScript",
+      "Tailwind CSS",
+      "Zustand",
+      "Recharts",
+      "Framer Motion"
+    ],
+    "contributions": [
+      "회사 소개, 연혁, 사업/제품, 채용, 고객지원으로 이어지는 정보 구조를 설계했습니다.",
+      "정적 빌드와 SEO를 고려해 Next.js 기반 프론트엔드 프로젝트를 구성했습니다.",
+      "다국어 확장과 관리자 운영을 고려한 화면 구조를 설계했습니다."
+    ],
+    "learnings": [
+      "기업 웹사이트는 시각 디자인보다 사업 구조와 사용자의 정보 탐색 흐름이 중요하다는 점을 배웠습니다.",
+      "SEO, 배포, 관리자 운영까지 고려해야 실제 사용할 수 있는 웹사이트가 된다는 점을 배웠습니다."
+    ],
+    "images": [
+      {
+        "src": "assets/projects/suman-01.png",
+        "label": "메인 페이지"
+      },
+      {
+        "src": "assets/projects/suman-02.png",
+        "label": "사업 / 제품 페이지"
+      },
+      {
+        "src": "assets/projects/suman-03.png",
+        "label": "문의 / FAQ 페이지"
+      }
+    ],
+    "resources": [
+      {
+        "title": "GitHub Repository",
+        "desc": "SUMAN 프론트엔드 저장소",
+        "url": "https://github.com/masterjms/suman_project_FE"
+      }
+    ],
+    "links": [
+      {
+        "label": "GitHub",
+        "icon": "fa-brands fa-github",
+        "url": "https://github.com/masterjms/suman_project_FE"
+      }
+    ]
+  },
+  "sorting": {
+    "kicker": "Algorithm · Logistics",
+    "title": "3D Sorting System Optimization Algorithm",
+    "summary": "3D 분류기의 병목과 특성을 분석하고, 이를 기반으로 최적화 알고리즘을 개발하는 프로젝트입니다.",
+    "tags": [
+      "Python",
+      "3D Packing",
+      "Heuristic",
+      "Scheduling",
+      "Optimization"
+    ],
+    "contributions": [
+      "Limited Buffer, Shuttle/AMR 대기시간, Rack할당 정책을 고려한 MIP 전략을 설계했습니다.",
+      "가까운 Rack우선, 랜덤, 빈 Rack 우선 휴리스틱 전략을 비교했습니다.",
+      "현실 물류 흐름을 온라인 알고리즘 문제로 모델링했습니다."
+    ],
+    "learnings": [
+      "현실의 물류 문제는 단순 최적화가 아니라 온라인 입력, 안정성, 버퍼 제약을 함께 고려해야 한다는 점을 배웠습니다.",
+      "알고리즘은 성능뿐 아니라 설명 가능성과 예외 상황 대응이 중요하다는 점을 배웠습니다."
+    ],
+    "images": [
+      {
+        "src": "assets/projects/sorting-01.png",
+        "label": "3D 적재 시각화"
+      },
+      {
+        "src": "assets/projects/sorting-02.png",
+        "label": "알고리즘 비교 결과"
+      },
+      {
+        "src": "assets/projects/sorting-03.png",
+        "label": "박스 입력 / 버퍼 흐름"
+      }
+    ],
+    "resources": [
+      {
+        "title": "GitHub Repository",
+        "desc": "3D Sorting System 저장소",
+        "url": "https://github.com/masterjms/3D_sorting_system"
+      }
+    ],
+    "links": [
+      {
+        "label": "GitHub",
+        "icon": "fa-brands fa-github",
+        "url": "https://github.com/masterjms/3D_sorting_system"
+      }
+    ]
+  },
+  "card": {
+    "kicker": "Machine Learning",
+    "title": "AI Card Segment Classification",
+    "summary": "카드 고객 세그먼트를 예측하기 위해 XGBoost, LightGBM, CatBoost 기반의 앙상블/캐스케이드 분류 흐름을 구성한 ML 프로젝트입니다.",
+    "tags": [
+      "XGBoost",
+      "LightGBM",
+      "CatBoost",
+      "Pandas",
+      "Scikit-learn"
+    ],
+    "contributions": [
+      "클래스별 threshold를 적용한 단계별 cascade 예측 흐름을 구성했습니다.",
+      "A/B 구간 전용 모델을 분리해 잔여 샘플을 다시 분류하는 구조를 실험했습니다.",
+      "모델 로딩, 추론, 결과 저장까지 이어지는 inference pipeline을 작성했습니다."
+    ],
+    "learnings": [
+      "정확도 개선은 모델 하나보다 데이터 전처리, threshold, 클래스별 전략이 함께 작동해야 한다는 점을 배웠습니다.",
+      "실험 코드는 재현 가능한 경로, 환경, 저장 구조까지 정리해야 유지보수가 가능하다는 점을 배웠습니다."
+    ],
+    "images": [
+      {
+        "src": "assets/projects/card-01.png",
+        "label": "모델 추론 흐름"
+      },
+      {
+        "src": "assets/projects/card-02.png",
+        "label": "세그먼트 분포"
+      },
+      {
+        "src": "assets/projects/card-03.png",
+        "label": "캐스케이드 전략"
+      }
+    ],
+    "resources": [
+      {
+        "title": "GitHub Repository",
+        "desc": "AI Card Segment 저장소",
+        "url": "https://github.com/masterjms/AI_card_segment"
+      }
+    ],
+    "links": [
+      {
+        "label": "GitHub",
+        "icon": "fa-brands fa-github",
+        "url": "https://github.com/masterjms/AI_card_segment"
+      }
+    ]
+  },
+  "factory": {
+    "kicker": "Smart Factory · Edge",
+    "title": "Smart Factory Edge Simulator",
+    "summary": "사출기 내부 상태와 공정 변수를 흉내 내고, 외부에서 읽을 수 있는 태그 레지스트리를 제공하는 스마트팩토리 L1 시뮬레이터입니다.",
+    "tags": [
+      "Python",
+      "Factory Simulation",
+      "Tag Registry",
+      "Edge Computing"
+    ],
+    "contributions": [
+      "IDLE, READY, RUN, STOP/ALARM 상태 전이를 갖는 설비 상태 모델을 구현했습니다.",
+      "샷 카운트, 양품/불량 카운트, 온도/압력/사이클타임 등 핵심 공정 변수를 생성했습니다.",
+      "마이크로 엣지가 읽을 수 있는 태그 소스 구조의 기반을 설계했습니다."
+    ],
+    "learnings": [
+      "제조 데이터 시스템은 센서값 생성보다 상태 모델과 태그 네이밍 체계가 먼저 잡혀야 한다는 점을 배웠습니다.",
+      "엣지/게이트웨이 구조를 실험하려면 실제 장비 없이도 재현 가능한 시뮬레이터가 필요하다는 점을 배웠습니다."
+    ],
+    "images": [
+      {
+        "src": "assets/projects/factory-01.png",
+        "label": "설비 상태 전이"
+      },
+      {
+        "src": "assets/projects/factory-02.png",
+        "label": "태그 레지스트리"
+      },
+      {
+        "src": "assets/projects/factory-03.png",
+        "label": "공정 변수 로그"
+      }
+    ],
+    "resources": [
+      {
+        "title": "GitHub Repository",
+        "desc": "Smart Factory Edge Simulator 저장소",
+        "url": "https://github.com/masterjms/smart-factory-edge-simulator"
+      }
+    ],
+    "links": [
+      {
+        "label": "GitHub",
+        "icon": "fa-brands fa-github",
+        "url": "https://github.com/masterjms/smart-factory-edge-simulator"
+      }
+    ]
+  },
+  "radio": {
+    "kicker": "IoT · Backend Experiment",
+    "title": "IoT Radio Server",
+    "summary": "IoT 라디오/방송 장비 제어를 위한 서버 실험 프로젝트입니다. Python 비동기 서버와 인증 구조를 기반으로 설계했습니다.",
+    "tags": [
+      "Python",
+      "aiohttp",
+      "JWT",
+      "bcrypt",
+      "IoT Backend"
+    ],
+    "contributions": [
+      "장비와 서버 사이의 제어/인증 흐름을 고려한 백엔드 구조를 실험했습니다.",
+      "비동기 HTTP/WebSocket 기반 확장을 염두에 둔 Python 서버 스택을 선정했습니다."
+    ],
+    "learnings": [
+      "IoT 서버는 단순 API보다 연결 안정성, 인증, 네트워크 환경 변화 대응이 중요하다는 점을 배웠습니다.",
+      "초기 실험 단계에서도 나중에 장비가 붙을 통신 흐름을 먼저 설계해야 한다는 점을 배웠습니다."
+    ],
+    "images": [
+      {
+        "src": "assets/projects/radio-01.png",
+        "label": "서버 구조 다이어그램"
+      },
+      {
+        "src": "assets/projects/radio-02.png",
+        "label": "인증 흐름"
+      },
+      {
+        "src": "assets/projects/radio-03.png",
+        "label": "IoT 통신 흐름"
+      }
+    ],
+    "resources": [
+      {
+        "title": "GitHub Repository",
+        "desc": "IoT Radio Server 저장소",
+        "url": "https://github.com/masterjms/IoT_radio_server"
+      }
+    ],
+    "links": [
+      {
+        "label": "GitHub",
+        "icon": "fa-brands fa-github",
+        "url": "https://github.com/masterjms/IoT_radio_server"
+      }
+    ]
+  }
+}
+  </script>
   <script>
 
     const projectDetails = JSON.parse(document.getElementById("projectData").textContent);
@@ -1735,7 +2289,12 @@
     const modalResources = document.getElementById("projectModalResources");
     const modalLinks = document.getElementById("projectModalLinks");
     const modalClose = document.getElementById("projectModalClose");
+    const imageLightbox = document.getElementById("imageLightbox");
+    const imageLightboxImg = document.getElementById("imageLightboxImg");
+    const imageLightboxCaption = document.getElementById("imageLightboxCaption");
+    const imageLightboxClose = document.getElementById("imageLightboxClose");
     let lastFocusedElement = null;
+    let lastFocusedImage = null;
 
     function escapeHtml(value) {
       return String(value ?? "")
@@ -1770,13 +2329,13 @@
 
       modalGallery.innerHTML = data.images
         .map(image => `
-          <div class="modal-shot is-missing">
-            <img src="${escapeHtml(image.src)}" alt="${escapeHtml(image.label)}" onload="this.parentElement.classList.remove('is-missing')" onerror="this.remove()" />
+          <button class="modal-shot is-missing" type="button" data-image-src="${escapeHtml(image.src)}" data-image-label="${escapeHtml(image.label)}" aria-label="${escapeHtml(image.label)} 확대해서 보기">
+            <img src="${escapeHtml(image.src)}" alt="${escapeHtml(image.label)}" onload="this.parentElement.classList.remove('is-missing')" onerror="this.parentElement.disabled=true; this.remove()" />
             <div class="modal-shot-placeholder">
               ${escapeHtml(image.label)}
               <small>${escapeHtml(image.src)}</small>
             </div>
-          </div>
+          </button>
         `)
         .join("");
 
@@ -1823,12 +2382,33 @@
     }
 
     function closeProjectModal() {
+      if (imageLightbox.classList.contains("is-open")) closeImageLightbox(false);
       modal.classList.remove("is-open");
       modal.setAttribute("aria-hidden", "true");
       document.body.classList.remove("modal-open");
 
       if (lastFocusedElement && typeof lastFocusedElement.focus === "function") {
         lastFocusedElement.focus();
+      }
+    }
+
+    function openImageLightbox(button) {
+      lastFocusedImage = button;
+      imageLightboxImg.src = button.dataset.imageSrc;
+      imageLightboxImg.alt = button.dataset.imageLabel;
+      imageLightboxCaption.textContent = button.dataset.imageLabel;
+      imageLightbox.classList.add("is-open");
+      imageLightbox.setAttribute("aria-hidden", "false");
+      imageLightboxClose.focus();
+    }
+
+    function closeImageLightbox(restoreFocus = true) {
+      imageLightbox.classList.remove("is-open");
+      imageLightbox.setAttribute("aria-hidden", "true");
+      imageLightboxImg.removeAttribute("src");
+
+      if (restoreFocus && lastFocusedImage && typeof lastFocusedImage.focus === "function") {
+        lastFocusedImage.focus();
       }
     }
 
@@ -1855,12 +2435,25 @@
 
     modalClose.addEventListener("click", closeProjectModal);
 
+    modalGallery.addEventListener("click", event => {
+      const imageButton = event.target.closest("[data-image-src]");
+      if (imageButton && !imageButton.disabled) openImageLightbox(imageButton);
+    });
+
+    imageLightboxClose.addEventListener("click", () => closeImageLightbox());
+
+    imageLightbox.addEventListener("click", event => {
+      if (event.target === imageLightbox) closeImageLightbox();
+    });
+
     modal.addEventListener("click", event => {
       if (event.target === modal) closeProjectModal();
     });
 
     document.addEventListener("keydown", event => {
-      if (event.key === "Escape" && modal.classList.contains("is-open")) {
+      if (event.key === "Escape" && imageLightbox.classList.contains("is-open")) {
+        closeImageLightbox();
+      } else if (event.key === "Escape" && modal.classList.contains("is-open")) {
         closeProjectModal();
       }
     });
